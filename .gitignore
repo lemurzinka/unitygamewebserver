@@ -1,0 +1,26 @@
+# Java
+*.class
+*.jar
+*.war
+*.log
+
+# Maven
+/target/
+/.mvn/
+/pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+release.properties
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# IDE
+.idea/
+*.iml
+*.ipr
+*.iws
