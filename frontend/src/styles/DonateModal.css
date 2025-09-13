@@ -1,0 +1,205 @@
+.donate-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.donate-frame {
+  position: relative;
+  width: 54.688rem;
+  height: 31.25rem;
+  background: url('../assets/images/stars-noised.png');
+  background-size: cover;
+  background-position: center;
+  border-radius: 2rem;
+  overflow: hidden;
+}
+
+.donate-close {
+  position: absolute;
+  top: 1.875rem;
+  right: 1.875rem;
+  width: 4.438rem;
+  height:  4.438rem;
+  background: url('../assets/images/close-icon.png') no-repeat center;
+  background-size: contain;
+  cursor: pointer;
+}
+
+.donate-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-style: normal;
+  position: absolute;
+  margin: auto;
+  top: 2.563rem;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 28.125rem;
+  height: 3.125rem;
+  font-size: 2.25rem;
+  line-height: 3.125rem;
+  color: #FFFFFF;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donate-sections {
+  position: absolute;
+  top: 12.5rem;
+  left: 6.5rem;
+  width: 41.875rem;
+  height: 13.25rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2.625rem;
+}
+
+.donate-card {
+  width: 12.188rem;
+  background: url('../assets/images/buy-bg.png');
+  background-size: cover;
+  background-position: center;
+  padding-top: 3.375rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border: 0.25rem solid white;
+}
+
+.donate-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  margin-bottom: 0.5rem; 
+}
+
+.donate-coins {
+  display: flex;
+  gap: 0.25rem;
+  margin-top: 0.5rem;
+}
+
+.donate-coins-stack {
+  position: relative;
+  width: 4.375rem; 
+  height: 2.063rem;
+}
+
+.coin {
+  position: absolute;
+  width: 2.313rem;
+  height: 2.063rem;
+
+}
+
+
+.coin-0 {
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+
+.coin-1 {
+  top: 50%;
+  left: calc(50% + 0.688rem);  
+  transform: translate(-50%, -50%);
+}
+
+.coin-2 {
+  top: 50%;
+  left: calc(50% - 0.688rem);
+  transform: translate(-50%, -50%);
+}
+
+.coin-4 {
+  top: calc(50% - 1rem); 
+  left: calc(50% - 0.688rem);
+  transform: translate(-50%, -50%);
+}
+.coin-3 {
+  top: calc(50% - 1rem); 
+  left: calc(50% + 0.688rem);
+  transform: translate(-50%, -50%);
+}
+
+
+
+.donate-coins img {
+  width: 2.313rem;
+  height: 2.063rem;
+}
+
+.donate-amount {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #FFDA66;
+  padding: 0.25rem 0.5rem;
+  text-align: center;
+  text-shadow:
+    0 0 2px rgba(241, 211, 121, 0.8),
+    0 0 4px rgba(241, 211, 121, 0.6),
+    0 0 8px rgba(241, 211, 121, 0.4);
+}
+
+.donate-price {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #00E6FF;
+  text-align: center;
+  text-shadow:
+    0 0 2px rgba(0, 230, 255, 0.8),
+    0 0 4px rgba(0, 230, 255, 0.6),
+    0 0 8px rgba(0, 230, 255, 0.4);
+}
+
+.donate-buy-wrapper {
+  position: relative;
+  width: 5.938rem;
+  height: 1.563rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.donate-buy-bg {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(180.58deg, #816D99 35.84%, #D9D9D9 99.5%);
+  border-radius: 0.75rem;
+  border: 0.063rem solid #4A3E3E;
+}
+
+.donate-buy-text {
+   font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-style: italic;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 1rem;
+  line-height: normal;
+  color: #FFFFFF;
+  border: none;
+  cursor: pointer;
+  -webkit-text-stroke: 0.063rem #000000;
+  text-shadow: none;
+}

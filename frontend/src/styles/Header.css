@@ -1,0 +1,77 @@
+html {
+  font-size: 16px;
+}
+
+.header {
+  position: absolute;
+  top: 5.1875rem;   
+  left: 69.375rem;  
+  width: 37.625rem; 
+  height: 2.125rem; 
+  z-index: 2;
+}
+
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: 100%;
+}
+
+.nav-button {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+  font-size: 1.5rem;
+  line-height: 2.0625rem;
+  color: #ffffff;
+  opacity: 0.85;
+  cursor: pointer;
+}
+
+.donate-text {
+  display: flex;
+  align-items: center;
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 600;
+    gap: 0.250rem;
+  font-size: 1.5rem;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.donate-label {
+  opacity: 0.85;
+}
+
+.coin-icon {
+  width: 1.785rem;
+  height: 1.6rem;
+  opacity: 1; 
+}
+
+.donate-menu {
+  position: absolute;
+  top: 3rem;
+  right: 0;
+  background-color: #1a1124;
+  padding: 1rem;
+  border-radius: 0.75rem;
+  box-shadow: 0 0 1rem rgba(0,0,0,0.5);
+  z-index: 10;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.donate-options button {
+  margin: 0.5rem;
+  padding: 0.5rem 1rem;
+  background-color: #382a38;
+  color: white;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}

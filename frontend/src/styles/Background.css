@@ -1,0 +1,24 @@
+.background {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.bg-layer {
+  position: absolute;
+  width: 187.5rem;
+  height: 106.25rem;
+  left: -31.25rem;
+  top: -16.875rem;
+  object-fit: cover;
+  opacity: 1;
+}
+
+.blur {
+  filter: blur(3.75rem);
+  opacity: 0.8;
+}

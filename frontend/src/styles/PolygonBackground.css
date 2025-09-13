@@ -1,0 +1,15 @@
+.polygon-bg {
+  position: absolute;
+  width: 104.9775rem; 
+  height: 60.859rem;
+  left: 20.875rem;
+  top: -23.125rem;
+
+
+
+  mix-blend-mode: lighten;
+
+
+  z-index: 1;
+ 
+}
