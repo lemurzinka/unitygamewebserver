@@ -7,6 +7,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class GamebackendApplication {
 
 	public static void main(String[] args) {
+		System.out.println("JVM timezone: " + java.util.TimeZone.getDefault().getID());
 		SpringApplication.run(GamebackendApplication.class, args);
 	}
 
