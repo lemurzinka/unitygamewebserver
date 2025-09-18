@@ -3,9 +3,12 @@ import "../styles/Header.css";
 import coinIcon from "../assets/images/coin.png";
 import DonateModal from "./DonateModal";
 import { AnimatePresence } from "framer-motion"; 
+import SignUpModal from "./SignUpModal";
 
 function Header() {
   const [showDonate, setShowDonate] = useState(false);
+  const [showSignUp, setShowSignUp] = useState(false);
+
 
   return (
     <>
@@ -13,7 +16,7 @@ function Header() {
         <nav className="nav">
           <div className="nav-button">Main</div>
           <div className="nav-button">Skins</div>
-          <div className="nav-button">Skins</div>
+          <div className="nav-button" onClick={() => setShowSignUp(true)}>Sign up</div>
           <div className="donate-text" onClick={() => setShowDonate(true)}>
             <span className="donate-label">Buy</span>
             <img src={coinIcon} alt="Coin" className="coin-icon" />
@@ -25,6 +28,7 @@ function Header() {
         {showDonate && (
           <DonateModal onClose={() => setShowDonate(false)} />
         )}
+        {showSignUp && <SignUpModal onClose={() => setShowSignUp(false)} />}
       </AnimatePresence>
     </>
   );

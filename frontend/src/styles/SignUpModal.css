@@ -1,0 +1,106 @@
+.signup-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 100;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.signup-background {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.signup-frame {
+  position: relative;
+  width: 31.25rem;
+  height: 40.625rem;
+  background-size: cover;
+  background-position: center;
+  border-radius: 2rem;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+
+.signup-header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 2.5rem;
+  padding-left: 1.25rem;
+  padding-right: 3.125rem;
+}
+
+.signup-title {
+  font-family: 'Open Sans', sans-serif;
+  font-weight: 800;
+  font-size: 2.25rem;
+  color: #fff;
+  text-align: center; 
+  margin-top: 3.125rem; 
+  margin-bottom: 1.875rem;
+}
+
+.signup-close {
+  position: absolute;
+  top: 2.5rem;   
+  right: 1.625rem; 
+  width: 4.438rem;
+  height: 4.438rem;
+  cursor: pointer;
+}
+
+
+
+.signup-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.563rem;
+  width: 15.625rem;
+  margin-top: 2.5rem;
+}
+
+.signup-form input {
+  font-family: 'PTSans', sans-serif;
+  font-weight: 700;
+  height: 3.75rem;
+  background: #D9D9D9;
+  border-radius: 1.25rem;
+  border: none;
+  padding: 0 0.938rem;
+  font-size: 1.125rem;
+}
+
+.signup-google {
+  font-family: 'PTSans', sans-serif;
+  font-weight: 700;
+  height: 3.75rem;
+  background: #D9D9D9;
+  border-radius: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.signup-register {
+  font-family: 'PTSans', sans-serif;
+  font-weight: 700;
+  height: 3.75rem;
+  background: linear-gradient(90deg, #D9D9D9 0%, #62B18C 100%);
+  border-radius: 1.25rem;
+  font-size: 1.5rem;
+  font-weight: 700;
+  cursor: pointer;
+}
