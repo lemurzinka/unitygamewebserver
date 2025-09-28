@@ -4,11 +4,16 @@ import coinIcon from "../assets/images/coin.png";
 import DonateModal from "./DonateModal";
 import { AnimatePresence } from "framer-motion"; 
 import SignUpModal from "./SignUpModal";
+import SignInModal from "./SignInModal";
 
 function Header() {
-  const [showDonate, setShowDonate] = useState(false);
-  const [showSignUp, setShowSignUp] = useState(false);
+  const [modal, setModal] = useState(null); 
+  const user = JSON.parse(localStorage.getItem("user"));
 
+  const handleLogout = () => {
+    localStorage.removeItem("user");
+    window.location.reload();
+  };
 
   return (
     <>
@@ -16,8 +21,20 @@ function Header() {
         <nav className="nav">
           <div className="nav-button">Main</div>
           <div className="nav-button">Skins</div>
-          <div className="nav-button" onClick={() => setShowSignUp(true)}>Sign up</div>
-          <div className="donate-text" onClick={() => setShowDonate(true)}>
+
+         {user ? (
+  <>
+    <div className="nav-button">{user.username}</div>
+    <div className="nav-button" onClick={handleLogout}>Logout</div>
+  </>
+) : (
+  <>
+    <div className="nav-button" onClick={() => setModal("signup")}>Sign up</div>
+    <div className="nav-button" onClick={() => setModal("signin")}>Sign in</div>
+  </>
+)}
+
+          <div className="donate-text" onClick={() => setModal("donate")}>
             <span className="donate-label">Buy</span>
             <img src={coinIcon} alt="Coin" className="coin-icon" />
           </div>
@@ -25,10 +42,21 @@ function Header() {
       </header>
 
       <AnimatePresence>
-        {showDonate && (
-          <DonateModal onClose={() => setShowDonate(false)} />
+        {modal === "donate" && (
+          <DonateModal onClose={() => setModal(null)} />
         )}
-        {showSignUp && <SignUpModal onClose={() => setShowSignUp(false)} />}
+        {modal === "signup" && (
+          <SignUpModal 
+            onClose={() => setModal(null)} 
+            onSwitchToSignIn={() => setModal("signin")} 
+          />
+        )}
+        {modal === "signin" && (
+          <SignInModal 
+            onClose={() => setModal(null)} 
+            onSwitchToSignUp={() => setModal("signup")} 
+          />
+        )}
       </AnimatePresence>
     </>
   );

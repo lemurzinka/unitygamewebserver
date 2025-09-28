@@ -1,4 +1,5 @@
-.signup-modal {
+
+.auth-modal {
   position: fixed;
   top: 0;
   left: 0;
@@ -10,7 +11,7 @@
   align-items: center;
 }
 
-.signup-background {
+.auth-background {
   position: absolute;
   top: 0;
   left: 0;
@@ -19,10 +20,9 @@
   background: rgba(0, 0, 0, 0.5);
 }
 
-.signup-frame {
+.auth-frame {
   position: relative;
   width: 31.25rem;
-  height: 40.625rem;
   background-size: cover;
   background-position: center;
   border-radius: 2rem;
@@ -33,38 +33,42 @@
 }
 
 
-.signup-header {
+.auth-frame.signup {
+  height: 40.625rem;
+}
+
+.auth-frame.signin {
+  height: 35.625rem;
+}
+
+.auth-header {
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 2.5rem;
-  padding-left: 1.25rem;
-  padding-right: 3.125rem;
+  padding: 2.5rem 3.125rem 2.5rem 1.25rem;
 }
 
-.signup-title {
+.auth-title {
   font-family: 'Open Sans', sans-serif;
   font-weight: 800;
   font-size: 2.25rem;
   color: #fff;
-  text-align: center; 
-  margin-top: 3.125rem; 
+  text-align: center;
+  margin-top: 3.125rem;
   margin-bottom: 1.875rem;
 }
 
-.signup-close {
+.auth-close {
   position: absolute;
-  top: 2.5rem;   
-  right: 1.625rem; 
+  top: 2.5rem;
+  right: 1.625rem;
   width: 4.438rem;
   height: 4.438rem;
   cursor: pointer;
 }
 
-
-
-.signup-form {
+.auth-form {
   display: flex;
   flex-direction: column;
   gap: 1.563rem;
@@ -72,7 +76,7 @@
   margin-top: 2.5rem;
 }
 
-.signup-form input {
+.auth-form input {
   font-family: 'PTSans', sans-serif;
   font-weight: 700;
   height: 3.75rem;
@@ -83,24 +87,37 @@
   font-size: 1.125rem;
 }
 
-.signup-google {
+.auth-google {
   font-family: 'PTSans', sans-serif;
   font-weight: 700;
   height: 3.75rem;
   background: #D9D9D9;
   border-radius: 1.25rem;
   font-size: 1.5rem;
-  font-weight: 700;
   cursor: pointer;
 }
 
-.signup-register {
+.auth-submit {
   font-family: 'PTSans', sans-serif;
   font-weight: 700;
   height: 3.75rem;
   background: linear-gradient(90deg, #D9D9D9 0%, #62B18C 100%);
   border-radius: 1.25rem;
   font-size: 1.5rem;
-  font-weight: 700;
   cursor: pointer;
+}
+
+.input-error {
+  outline: 0.125rem solid #ff4d4f;
+  color: #ff4d4f;
+}
+
+.input-error::placeholder {
+  color: #ff4d4f;
+}
+
+.auth-form input::placeholder {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
