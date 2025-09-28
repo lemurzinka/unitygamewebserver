@@ -3,10 +3,10 @@ import { motion } from "framer-motion";
 import "../styles/SignUpAndInModal.css";
 import closeIcon from "../assets/images/close-icon.png";
 import bgImage from "../assets/images/stars-noised.png";
-import { registerUser } from "../api/auth";
+import { loginUser } from "../api/auth";
 
-export default function SignUpModal({ onClose, onSwitchToSignIn }) {
-  const [form, setForm] = useState({ username: "", email: "", password: "" });
+export default function SignInModal({ onClose, onSwitchToSignUp }) {
+  const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
 
   const handleChange = e => {
@@ -17,36 +17,22 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
 
   const validate = () => {
     const e = {};
-    if (!form.username || form.username.length < 3) {
-      e.username = {
-        short: "Min 3 chars",
-        full: "Username must be at least 3 characters"
-      };
-    }
     if (!form.email || !form.email.includes("@")) {
-      e.email = {
-        short: "Invalid email",
-        full: "Email must include '@' symbol"
-      };
+      e.email = { short: "Invalid email", full: "Invalid email format" };
     }
     if (!form.password || form.password.length < 6) {
-      e.password = {
-        short: "Min 6 chars",
-        full: "Password must be at least 6 characters"
-      };
+      e.password = { short: "Min 6 chars", full: "Password must be at least 6 characters" };
     }
     return e;
   };
 
   const handleSubmit = async e => {
     e.preventDefault();
-
     const newErrors = validate();
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
       setForm(prev => ({
         ...prev,
-        ...(newErrors.username ? { username: "" } : {}),
         ...(newErrors.email ? { email: "" } : {}),
         ...(newErrors.password ? { password: "" } : {})
       }));
@@ -54,36 +40,26 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
     }
 
     try {
-      const res = await registerUser(form);
-
+      const res = await loginUser(form);
       if (res.ok) {
         const data = await res.json();
         alert(data.message);
-
         localStorage.setItem("user", JSON.stringify({
           id: data.userId,
           email: data.email,
           username: data.username
         }));
-
         onClose();
         window.location.reload();
       } else {
         let data;
-        try {
-          data = await res.json();
-        } catch {
-          data = { message: await res.text() };
-        }
-
-        if (data.error === "EMAIL_EXISTS") {
-          if (window.confirm("This email is already registered. Do you want to sign in instead?")) {
-            onSwitchToSignIn();
-          }
-        } else if (data.error === "USERNAME_EXISTS") {
-          if (window.confirm("This username is already taken. Do you want to sign in instead?")) {
-            onSwitchToSignIn();
-          }
+        try { data = await res.json(); } catch { data = { message: await res.text() }; }
+        if (data.error === "USER_NOT_FOUND") {
+          alert("User not found. Please sign up.");
+          onSwitchToSignUp();
+        } else if (data.error === "INVALID_PASSWORD") {
+          setErrors({ password: { short: "Wrong pass", full: "Invalid password" } });
+          setForm(prev => ({ ...prev, password: "" }));
         } else {
           alert("Error: " + data.message);
         }
@@ -104,7 +80,7 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
     >
       <div className="auth-background" onClick={onClose} />
 
-      <div className="auth-frame signup" style={{ backgroundImage: `url(${bgImage})` }}>
+      <div className="auth-frame signin" style={{ backgroundImage: `url(${bgImage})` }}>
         <img
           src={closeIcon}
           alt="Close"
@@ -112,30 +88,9 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
           onClick={onClose}
         />
 
-        <h2 className="auth-title">Sign up</h2>
+        <h2 className="auth-title">Sign in</h2>
 
         <form className="auth-form" onSubmit={handleSubmit} noValidate>
-          <input
-            name="username"
-            placeholder={errors.username ? errors.username.short : "Username"}
-            title={errors.username?.full || ""}
-            autoComplete="username"
-            value={form.username}
-            onChange={handleChange}
-            className={errors.username ? "input-error" : ""}
-          />
-
-          <input
-            name="password"
-            type="password"
-            placeholder={errors.password ? errors.password.short : "Password"}
-            title={errors.password?.full || ""}
-            autoComplete="new-password"
-            value={form.password}
-            onChange={handleChange}
-            className={errors.password ? "input-error" : ""}
-          />
-
           <input
             name="email"
             type="email"
@@ -147,8 +102,19 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
             className={errors.email ? "input-error" : ""}
           />
 
+          <input
+            name="password"
+            type="password"
+            placeholder={errors.password ? errors.password.short : "Password"}
+            title={errors.password?.full || ""}
+            autoComplete="current-password"
+            value={form.password}
+            onChange={handleChange}
+            className={errors.password ? "input-error" : ""}
+          />
+
           <button type="button" className="auth-google">Google</button>
-          <button type="submit" className="auth-submit">Register</button>
+          <button type="submit" className="auth-submit">Sign in</button>
         </form>
       </div>
     </motion.div>
