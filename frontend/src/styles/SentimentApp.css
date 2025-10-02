@@ -1,0 +1,76 @@
+.sentiment-widget {
+  position: fixed;
+  bottom: 1.25rem;
+  right: 1.25rem;
+  width: 20rem;
+  background: #1e1e2f;
+  border-radius: 0.75rem;
+  padding: 1rem;
+  box-shadow: 0 0.25rem 0.75rem rgba(0,0,0,0.5);
+  color: #fff;
+  font-family: "Open Sans", sans-serif;
+  font-weight: 400;
+  z-index: 9999;
+}
+
+.title {
+  margin-top: -0.5rem; 
+  margin-bottom: 0.8rem; 
+  font-size: 1.2rem;
+  text-align: center;
+}
+
+
+.input-box {
+  width: 100%;
+  height: 5rem;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  border: none;
+  resize: none;
+  font-size: 0.95rem;
+  margin-bottom: 0.5rem;
+  box-sizing: border-box; 
+}
+
+
+.analyze-btn {
+  width: 100%;
+  background: linear-gradient(135deg, #5329b6, #051f3a);
+  background-size: 200% 200%; 
+  background-position: left center;
+  color: white;
+  border: none;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-position 0.6s ease, transform 0.2s ease;
+}
+
+.analyze-btn:hover {
+  background-position: right center;
+  transform: translateY(-2px);
+  box-shadow: 0 0 12px rgba(125, 76, 239, 0.6);
+}
+
+
+.result-card {
+  margin-top: 1rem;
+  padding: 0.8rem;
+  border-radius: 0.5rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+.result-card.positive {
+  background: rgba(0, 200, 0, 0.2);
+  border: 0.125rem solid #00c800;
+  color: #00ff88;
+}
+
+.result-card.negative {
+  background: rgba(200, 0, 0, 0.2);
+  border: 0.125rem solid #c80000;
+  color: #ff5555;
+}
