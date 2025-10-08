@@ -14,9 +14,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 @RestController
 @RequestMapping("/api/nlp")
 public class HuggingFaceController {
+
+    private static final Logger logger = LoggerFactory.getLogger(HuggingFaceController.class);
 
     @Value("${hf.token}")
     private String hfToken;
@@ -26,6 +32,7 @@ public class HuggingFaceController {
     @PostMapping("/analyze")
     public ResponseEntity<String> analyze(@RequestBody Map<String, String> body) {
         String text = body.get("text");
+        logger.info("User submitted text for sentiment analysis: {}", text);
 
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
@@ -38,7 +45,9 @@ public class HuggingFaceController {
         String url = "https://api-inference.huggingface.co/models/distilbert/distilbert-base-uncased-finetuned-sst-2-english";
         ResponseEntity<String> response = restTemplate.postForEntity(url, request, String.class);
 
-      
+        logger.info("Sentiment API response: {}", response.getBody());
+
         return ResponseEntity.ok(response.getBody());
     }
 }
+

@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import './styles/fonts.css';
 import PolygonBackground from './components/PolygonBackground';
 import SentimentApp from "./components/SentimentApp";
+import Dashboard from "./components/Dashboard";
 
 function App() {
   return (
@@ -13,11 +14,10 @@ function App() {
       <Background />
       <Header />
       <main className="main-content">
-        {/* Тут вставляємо компонент */}
         <SentimentApp />
+        <Dashboard />   {}
       </main>
     </div>
   );
 }
-
 export default App;
