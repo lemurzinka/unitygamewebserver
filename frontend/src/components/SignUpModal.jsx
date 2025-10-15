@@ -63,7 +63,8 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
         localStorage.setItem("user", JSON.stringify({
           id: data.userId,
           email: data.email,
-          username: data.username
+          username: data.username,  
+          token: data.token
         }));
 
         onClose();
