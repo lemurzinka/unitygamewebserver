@@ -22,7 +22,7 @@ function Header() {
           <div className="nav-button">Main</div>
           <div className="nav-button">Skins</div>
 
-         {user ? (
+         {user && user.username ? (
   <>
     <div className="nav-button">{user.username}</div>
     <div className="nav-button" onClick={handleLogout}>Logout</div>
@@ -33,6 +33,7 @@ function Header() {
     <div className="nav-button" onClick={() => setModal("signin")}>Sign in</div>
   </>
 )}
+
 
           <div className="donate-text" onClick={() => setModal("donate")}>
             <span className="donate-label">Buy</span>
