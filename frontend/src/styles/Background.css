@@ -1,9 +1,9 @@
 .background {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   width: 100vw;
-  height: 100vh;
+  min-height: 200vh;
   overflow: hidden;
   z-index: 0;
 }
@@ -18,7 +18,54 @@
   opacity: 1;
 }
 
+.bg-layer.bottom {
+  width: 2625.6px;
+  height: 1500px;
+  left: -353px;
+  top: 1200px;
+
+  mask-image: linear-gradient(to top, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to top, black 80%, transparent 100%);
+}
+
+
 .blur {
   filter: blur(3.75rem);
   opacity: 0.8;
 }
+
+
+.moon {
+  position: absolute;
+  width: 750px;
+  height: 750px;
+  left: 267px;
+  top: 195px;
+  background: url('../assets/images/moon.avif') no-repeat center/contain;
+  z-index: 1;
+
+  animation: spin 5s linear infinite;
+}
+
+.skin-circle {
+  border-radius: 50%; 
+  left: 400px;
+  top: 350px; 
+  width: 450px;
+  height: 450px;           
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;          
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+
+

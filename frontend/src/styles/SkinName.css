@@ -1,0 +1,17 @@
+.skin-name {
+  position: absolute;
+  width: 465px;
+  height: 333px;
+left: 1288px;
+top: 419px;
+
+
+  font-family: 'Open Sans', sans-serif;
+  font-style: normal;
+  font-weight: 800;
+  font-size: 125px;
+  line-height: 170px;
+  text-align: center;
+
+  color: #FFFFFF;
+}

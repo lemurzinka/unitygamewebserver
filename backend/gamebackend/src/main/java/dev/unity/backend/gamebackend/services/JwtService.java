@@ -1,6 +1,7 @@
 package dev.unity.backend.gamebackend.services;
 
 import dev.unity.backend.gamebackend.entity.User;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -36,6 +37,17 @@ public class JwtService {
     }
 
     public boolean validateToken(String token, User user) {
-        return extractUsername(token).equals(user.getEmail());
+    try {
+        Claims claims = Jwts.parserBuilder().setSigningKey(key).build()
+                .parseClaimsJws(token).getBody();
+
+        boolean notExpired = claims.getExpiration().after(new Date());
+        boolean emailMatches = claims.getSubject().equals(user.getEmail());
+
+        return notExpired && emailMatches;
+    } catch (Exception e) {
+        return false;
     }
+}
+
 }

@@ -1,14 +1,21 @@
 package dev.unity.backend.gamebackend.repository;
 
 import dev.unity.backend.gamebackend.entity.User;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.Optional;
 
-import org.springframework.data.jpa.repository.JpaRepository;
-
 public interface UserRepository extends JpaRepository<User, Long> {
-    boolean existsByUsername(String username);
-    boolean existsByEmail(String email);
-    Optional<User> findByEmail(String email);
 
+    boolean existsByUsername(String username);
+
+    boolean existsByEmail(String email);
+
+    Optional<User> findByEmailIgnoreCase(String email);
+
+    
+    @Query("SELECT u FROM User u LEFT JOIN FETCH u.ownedSkins WHERE LOWER(u.email) = LOWER(:email)")
+    Optional<User> findByEmailWithSkins(@Param("email") String email);
 }

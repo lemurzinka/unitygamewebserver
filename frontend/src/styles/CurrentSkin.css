@@ -1,0 +1,17 @@
+.current-skin {
+  position: absolute;
+  width: 246px;
+  height: 35px;
+  left: 1398px;
+  top: 393px;
+
+  font-family: 'Open Sans', sans-serif;
+  font-style: italic;
+  font-weight: 900;
+  font-size: 20px;
+  line-height: 27px;
+  text-align: center;
+
+  color: #FFFFFF;
+  opacity: 0.52;
+}

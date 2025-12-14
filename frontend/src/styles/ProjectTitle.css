@@ -1,0 +1,26 @@
+.project-title {
+  position: absolute;
+  left: 106px;
+  top: 44px;
+
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 64px;
+
+  background: linear-gradient(
+    90deg,
+    #ff00ff,  
+    #a020f0,  
+    #8a2be2,  
+    #da70d6,  
+    #ff1493    
+  );
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+
+  text-shadow: 0 0 8px rgba(255, 0, 255, 0.7),
+               0 0 16px rgba(160, 32, 240, 0.6),
+               0 0 24px rgba(138, 43, 226, 0.5);
+
+  z-index: 3;
+}

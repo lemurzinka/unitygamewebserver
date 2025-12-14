@@ -12,9 +12,3 @@ html, body {
   overflow-x: hidden;
 }
 
-.main-content {
-  position: relative;
-  z-index: 1;
-  max-width: 120rem;
-  margin: 0 auto;
-}

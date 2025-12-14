@@ -4,43 +4,60 @@ import "../styles/SentimentApp.css";
 function SentimentApp() {
   const [text, setText] = useState("");
   const [result, setResult] = useState(null);
+  const [visible, setVisible] = useState(true);
+  const [isClosing, setIsClosing] = useState(false);
 
   const analyze = async () => {
-    const res = await fetch("http://localhost:8080/api/nlp/analyze", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ text }),
-    });
-    const data = await res.json();
-    setResult(data);
+const res = await fetch("http://localhost:8080/api/nlp/analyze", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ text }),
+});
+
+if (!res.ok) {
+  const text = await res.text();
+  console.error("❌ NLP error:", res.status, text);
+  return;
+}
+
+const data = await res.json();
+setResult(data);
+
   };
 
-const renderMessage = () => {
-  if (!result || result.length === 0) return null;
+  const handleClose = () => {
+    setIsClosing(true); 
+    setTimeout(() => setVisible(false), 400); 
+  };
 
-  const first = Array.isArray(result[0]) ? result[0][0] : result[0];
-  if (!first || !first.label) return null;
+  const renderMessage = () => {
+    if (!result || result.length === 0) return null;
 
-  const label = first.label.toUpperCase();
+    const first = Array.isArray(result[0]) ? result[0][0] : result[0];
+    if (!first || !first.label) return null;
 
-  if (label === "POSITIVE") {
-    return (
-      <div className="result-card positive">
-        <p>😊 Thank you for your feedback!</p>
-      </div>
-    );
-  } else {
-    return (
-      <div className="result-card negative">
-        <p>🙏 We have taken your wishes</p>
-      </div>
-    );
-  }
-};
+    const label = first.label.toUpperCase();
 
+    if (label === "POSITIVE") {
+      return (
+        <div className="result-card positive">
+          <p>😊 Thank you for your feedback!</p>
+        </div>
+      );
+    } else {
+      return (
+        <div className="result-card negative">
+          <p>🙏 We have taken your wishes</p>
+        </div>
+      );
+    }
+  };
+
+  if (!visible) return null;
 
   return (
-    <div className="sentiment-widget">
+    <div className={`sentiment-widget ${isClosing ? "fade-out" : ""}`}>
+      <button className="close-btn" onClick={handleClose}>×</button>
       <h2 className="title">Send feedback</h2>
       <textarea
         className="input-box"

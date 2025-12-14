@@ -48,12 +48,18 @@ public class AuthController {
         userRepository.save(user);
         logger.info("User registered successfully: id={}, username={}", user.getId(), user.getUsername());
 
-        return ResponseEntity.ok(Map.of(
-                "message", "User registered successfully",
-                "userId", user.getId(),
-                "email", user.getEmail(),
-                "username", user.getUsername()
-        ));
+String token = jwtService.generateToken(user);
+
+return ResponseEntity.ok(Map.of(
+    "message", "User registered successfully",
+    "userId", user.getId(),
+    "email", user.getEmail(),
+    "username", user.getUsername(),
+    "balance", user.getBalance(),   
+    "token", token
+));
+
+
     }
 
     @PostMapping("/login")
@@ -63,7 +69,7 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 
     logger.info("Login attempt with email={}", email);
 
-    User user = userRepository.findByEmail(email).orElse(null);
+    User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
     if (user == null || !passwordEncoder.matches(password, user.getPassword())) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                 .body(Map.of("error", "INVALID_CREDENTIALS", "message", "Invalid email or password"));
@@ -73,13 +79,15 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 
     logger.info("User logged in successfully: id={}, username={}", user.getId(), user.getUsername());
 
-    return ResponseEntity.ok(Map.of(
-            "message", "Sign in successful",
-            "token", token,
-            "userId", user.getId(),
-            "email", user.getEmail(),
-            "username", user.getUsername()   
-    ));
+return ResponseEntity.ok(Map.of(
+    "message", "User registered successfully",
+    "userId", user.getId(),
+    "email", user.getEmail(),
+    "username", user.getUsername(),
+    "balance", user.getBalance(),   
+    "token", token
+));
+
 }
 
 }
