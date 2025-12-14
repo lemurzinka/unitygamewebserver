@@ -1,0 +1,9 @@
+.polygon{
+  position: absolute;
+  top: 430px;
+  left: -241px;
+  width: 1463px;
+  height: 708px;
+  z-index: 1; 
+  pointer-events: none; 
+}

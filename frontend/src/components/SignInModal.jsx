@@ -44,12 +44,17 @@ export default function SignInModal({ onClose, onSwitchToSignUp }) {
       if (res.ok) {
         const data = await res.json();
         alert(data.message);
-        localStorage.setItem("user", JSON.stringify({
+localStorage.setItem("user", JSON.stringify({
   id: data.userId,
   email: data.email,
-  username: data.username,  
+  username: data.username,
+  balance: data.balance,   
   token: data.token
 }));
+
+
+
+
 
         onClose();
         window.location.reload();
@@ -122,3 +127,4 @@ export default function SignInModal({ onClose, onSwitchToSignUp }) {
     </motion.div>
   );
 }
+

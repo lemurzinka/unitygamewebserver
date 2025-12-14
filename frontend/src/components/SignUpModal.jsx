@@ -60,12 +60,15 @@ export default function SignUpModal({ onClose, onSwitchToSignIn }) {
         const data = await res.json();
         alert(data.message);
 
-        localStorage.setItem("user", JSON.stringify({
-          id: data.userId,
-          email: data.email,
-          username: data.username,  
-          token: data.token
-        }));
+localStorage.setItem("user", JSON.stringify({
+  id: data.userId,
+  email: data.email,
+  username: data.username,
+  balance: data.balance,   
+  token: data.token
+}));
+
+
 
         onClose();
         window.location.reload();

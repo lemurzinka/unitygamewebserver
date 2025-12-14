@@ -20,7 +20,7 @@ public class AuthGraphQLController {
 
     @QueryMapping
     public User userByEmail(String email) {
-        return userRepository.findByEmail(email).orElse(null);
+        return userRepository.findByEmailIgnoreCase(email).orElse(null);
     }
 
     @MutationMapping
@@ -34,7 +34,7 @@ public class AuthGraphQLController {
 
     @MutationMapping
     public User login(String email, String password) {
-        return userRepository.findByEmail(email)
+        return userRepository.findByEmailIgnoreCase(email)
                 .filter(u -> u.getPassword().equals(password))
                 .orElse(null);
     }

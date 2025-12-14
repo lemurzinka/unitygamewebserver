@@ -12,6 +12,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.http.HttpMethod;
+
 
 @Configuration
 @EnableWebSecurity
@@ -23,19 +25,36 @@ public class SecurityConfig {
         this.jwtAuthFilter = jwtAuthFilter;
     }
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(auth -> auth
-    .requestMatchers("/auth/**", "/stripe/webhook", "/api/logs/**",  "/stripe/create-checkout-session", "api/nlp/**").permitAll()
+@Bean
+public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    http
+        .cors() 
+        .and()  
+        .csrf().disable()
+        .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        .authorizeHttpRequests(auth -> auth
+    .requestMatchers("/auth/**", "/stripe/webhook", "/api/logs/**", "/stripe/test").permitAll()
+    .requestMatchers(HttpMethod.GET, "/api/users/*/balance").permitAll()
+    .requestMatchers(HttpMethod.GET, "/api/skins").permitAll()
+    .requestMatchers(HttpMethod.GET, "/api/skins/*/image").permitAll()
+    .requestMatchers(HttpMethod.POST, "/api/skins/upload").permitAll()
+    .requestMatchers(HttpMethod.POST, "/api/nlp/analyze").permitAll()
+    .requestMatchers("/api/skins/*/buy").authenticated()
+    .requestMatchers("/api/skins/*/select").authenticated()
+    .requestMatchers("/stripe/create-checkout-session").authenticated()
+    .requestMatchers(HttpMethod.GET, "/api/users/me").authenticated()
+    .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
     .anyRequest().authenticated()
 )
 
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
-    }
+
+        .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
+
+
+
 
     @Bean
     public PasswordEncoder passwordEncoder() {

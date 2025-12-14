@@ -1,18 +1,26 @@
 package dev.unity.backend.gamebackend.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.EqualsAndHashCode;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import java.util.Set;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "skins")
+@EqualsAndHashCode(onlyExplicitlyIncluded = true) 
 public class Skin {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @EqualsAndHashCode.Include
     private Integer skinId;
 
     @Column(nullable = false)
@@ -20,8 +28,14 @@ public class Skin {
 
     private Integer price = 0;
     private String rarity;
-    private String imageUrl;
     private Boolean unlockedByDefault = false;
 
-    // Getters, setters, constructors
+    @Column(name = "image_data")
+    @Basic(fetch = FetchType.LAZY) 
+    private byte[] imageData;
+
+  
+    @ManyToMany(mappedBy = "ownedSkins")
+    @JsonIgnore
+    private Set<User> users;
 }
