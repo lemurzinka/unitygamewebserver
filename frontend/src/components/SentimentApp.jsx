@@ -30,28 +30,26 @@ setResult(data);
     setTimeout(() => setVisible(false), 400); 
   };
 
-  const renderMessage = () => {
-    if (!result || result.length === 0) return null;
+const renderMessage = () => {
+  if (!result || !result.label) return null;
 
-    const first = Array.isArray(result[0]) ? result[0][0] : result[0];
-    if (!first || !first.label) return null;
+  const label = result.label.toUpperCase();
 
-    const label = first.label.toUpperCase();
+  if (label === "POSITIVE") {
+    return (
+      <div className="result-card positive">
+        <p>😊 Thank you for your feedback!</p>
+      </div>
+    );
+  } else {
+    return (
+      <div className="result-card negative">
+        <p>🙏 We have taken your wishes</p>
+      </div>
+    );
+  }
+};
 
-    if (label === "POSITIVE") {
-      return (
-        <div className="result-card positive">
-          <p>😊 Thank you for your feedback!</p>
-        </div>
-      );
-    } else {
-      return (
-        <div className="result-card negative">
-          <p>🙏 We have taken your wishes</p>
-        </div>
-      );
-    }
-  };
 
   if (!visible) return null;
 

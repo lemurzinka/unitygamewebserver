@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../styles/Header.css";
 import coinIcon from "../assets/images/coin.png";
 import DonateModal from "./DonateModal";
@@ -9,7 +9,15 @@ import SkinsModal from "./SkinsModal";
 
 function Header() {
   const [modal, setModal] = useState(null); 
-  const user = JSON.parse(localStorage.getItem("user"));
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
+
+  useEffect(() => {
+    const handler = () => {
+      setUser(JSON.parse(localStorage.getItem("user")));
+    };
+    window.addEventListener("userUpdated", handler);
+    return () => window.removeEventListener("userUpdated", handler);
+  }, []);
 
   const handleLogout = () => {
     localStorage.removeItem("user");

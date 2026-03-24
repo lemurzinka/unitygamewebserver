@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import "../styles/SkinsModal.css";
+import binIcon from "../assets/images/bin.png";
+
 
 function SkinsModal({ onClose }) {
   const [filter, setFilter] = useState("All");
@@ -64,13 +66,17 @@ function SkinsModal({ onClose }) {
 
       const data = await res.json();
       if (data.success) {
-  const updatedUser = await fetchUserFromBackend(token);
-  if (!updatedUser) return;
+  const updatedUser = { ...user, balance: data.newBalance };
+  localStorage.setItem("user", JSON.stringify(updatedUser));
+  setUser(updatedUser);
 
   const updatedSkin = { ...skin, owned: true };
   setSkins(skins.map(s => s.skinId === skin.skinId ? updatedSkin : s));
   setSelectedSkin(updatedSkin);
+
+  window.dispatchEvent(new Event("userUpdated"));
 }
+
 
     } catch (err) {
       console.error("❌ Error buying skin:", err.message);
@@ -137,6 +143,23 @@ function SkinsModal({ onClose }) {
 };
 
 
+const handleDeleteSkin = async (skinId) => {
+  try {
+    const res = await fetch(`http://localhost:8080/api/skins/${skinId}`, {
+      method: "DELETE",
+      headers: { "Authorization": `Bearer ${user.token}` }
+    });
+    const data = await res.json();
+    if (data.success) {
+      setSkins(skins.filter(s => s.skinId !== skinId));
+    } else {
+      console.error("❌ Error deleting skin:", data.error);
+    }
+  } catch (err) {
+    console.error("❌ Error deleting skin:", err);
+  }
+};
+
 
   const handleCloseForm = () => {
     setShowForm(false);
@@ -165,6 +188,7 @@ function SkinsModal({ onClose }) {
     try {
       const res = await fetch("http://localhost:8080/api/skins/upload", {
         method: "POST",
+         headers: { "Authorization": `Bearer ${user.token}` },
         body: formData
       });
       const savedSkin = await res.json();
@@ -209,12 +233,15 @@ function SkinsModal({ onClose }) {
                   </div>
                 </div>
               ))}
-              <div className="skin-card add-card" onClick={() => {
-                setNewSkin({ ...newSkin, rarity: filter === "All" ? "Common" : filter });
-                setShowForm(true);
-              }}>
-                <div className="plus-icon">+</div>
-              </div>
+              {user?.isAdmin && (
+  <div className="skin-card add-card" onClick={() => {
+    setNewSkin({ ...newSkin, rarity: filter === "All" ? "Common" : filter });
+    setShowForm(true);
+  }}>
+    <div className="plus-icon">+</div>
+  </div>
+)}
+
             </div>
           </div>
         </div>
@@ -261,6 +288,12 @@ function SkinsModal({ onClose }) {
             <p className="rarity">{selectedSkin.rarity}</p>
             <p className="price">{selectedSkin.price ? `${selectedSkin.price} coins` : "Free"}</p>
 
+   {user?.isAdmin && (
+        <button className="delete-btn" onClick={() => handleDeleteSkin(selectedSkin.skinId)}>
+          <img src={binIcon} alt="Delete" className="delete-icon" />
+        </button>
+      )}
+      
             {selectedSkin.owned ? (
               selectedSkin.selected ? (
                 <button className="selected-btn" disabled>Selected</button>

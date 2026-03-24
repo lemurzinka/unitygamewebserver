@@ -44,6 +44,7 @@ html {
 }
 
 .coin-icon {
+  margin-top: 0.2rem;
   width: 1.785rem;
   height: 1.6rem;
   opacity: 1; 

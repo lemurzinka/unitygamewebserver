@@ -402,3 +402,60 @@
   border: 2px solid #ffd700;
   box-shadow: 0 0 10px rgba(255, 215, 0, 0.6); 
 }
+
+.select-btn {
+  background: linear-gradient(135deg, #7d4cef, #00e6ff);
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 0 12px rgba(0, 230, 255, 0.6);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.select-btn:hover {
+  background: linear-gradient(135deg, #00e6ff, #7d4cef);
+  transform: scale(1.05);
+  box-shadow: 0 0 18px rgba(125, 76, 239, 0.8);
+}
+
+.selected-btn {
+  background: linear-gradient(135deg, #ffd700, #ff9a00);
+  color: #fff;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 700;
+  font-size: 18px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 10px;
+  cursor: not-allowed;
+  opacity: 0.9;
+  box-shadow: 0 0 15px rgba(255, 215, 0, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.selected-btn:disabled {
+  background: linear-gradient(135deg, #c0a000, #ffb84d);
+  color: #eee;
+}
+
+
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.delete-icon {
+  width: 30px;
+  height: 30px;
+  vertical-align: middle; 
+}

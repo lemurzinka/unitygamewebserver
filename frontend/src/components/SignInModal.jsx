@@ -48,9 +48,11 @@ localStorage.setItem("user", JSON.stringify({
   id: data.userId,
   email: data.email,
   username: data.username,
-  balance: data.balance,   
+  balance: data.balance,
+  isAdmin: data.isAdmin,   
   token: data.token
 }));
+
 
 
 

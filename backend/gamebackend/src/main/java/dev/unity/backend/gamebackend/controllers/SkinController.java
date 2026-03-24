@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -50,30 +51,49 @@ public class SkinController {
     }
 
   
-    @PostMapping("/upload")
-    @Transactional
-    public ResponseEntity<SkinDto> uploadSkin(
-            @RequestParam("file") MultipartFile file,
-            @RequestParam("name") String name,
-            @RequestParam("rarity") String rarity,
-            @RequestParam(value = "price", defaultValue = "0") Integer price
-    ) throws IOException {
-        Skin skin = new Skin();
-        skin.setName(name);
-        skin.setRarity(rarity);
-        skin.setPrice(price);
-        skin.setUnlockedByDefault(false);
-        skin.setImageData(file.getBytes());
+@PostMapping("/upload")
+@Transactional
+public ResponseEntity<?> uploadSkin(
+        @RequestParam("file") MultipartFile file,
+        @RequestParam("name") String name,
+        @RequestParam("rarity") String rarity,
+        @RequestParam(value = "price", defaultValue = "0") Integer price,
+        Authentication auth
+) throws IOException {
 
-        Skin saved = skinRepository.save(skin);
-        return ResponseEntity.ok(new SkinDto(
-                saved.getSkinId(),
-                saved.getName(),
-                saved.getPrice(),
-                saved.getRarity(),
-                saved.getUnlockedByDefault()
-        ));
+    String email = auth.getName();
+    User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
+
+    if (user == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "USER_NOT_FOUND"));
     }
+
+
+    if (!Boolean.TRUE.equals(user.getIsAdmin())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", "NOT_ADMIN"));
+    }
+
+
+    Skin skin = new Skin();
+    skin.setName(name);
+    skin.setRarity(rarity);
+    skin.setPrice(price);
+    skin.setUnlockedByDefault(false);
+    skin.setImageData(file.getBytes());
+
+    Skin saved = skinRepository.save(skin);
+
+    return ResponseEntity.ok(new SkinDto(
+            saved.getSkinId(),
+            saved.getName(),
+            saved.getPrice(),
+            saved.getRarity(),
+            saved.getUnlockedByDefault()
+    ));
+}
+
 
 
     @GetMapping("/{skinId}/image")
@@ -145,6 +165,39 @@ public ResponseEntity<?> selectSkin(@PathVariable Integer skinId, Authentication
             "selectedSkinId", skin.getSkinId()
     ));
 }
+
+@DeleteMapping("/{skinId}")
+@Transactional
+public ResponseEntity<?> deleteSkin(@PathVariable Integer skinId, Authentication auth) {
+    String email = auth.getName();
+    User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
+
+    if (user == null) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                .body(Map.of("error", "USER_NOT_FOUND"));
+    }
+
+    if (!Boolean.TRUE.equals(user.getIsAdmin())) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(Map.of("error", "NOT_ADMIN"));
+    }
+
+    Skin skin = skinRepository.findById(skinId).orElse(null);
+    if (skin == null) {
+        return ResponseEntity.status(HttpStatus.NOT_FOUND)
+                .body(Map.of("error", "SKIN_NOT_FOUND"));
+    }
+
+  
+    userRepository.findAll().forEach(u -> u.getOwnedSkins().remove(skin));
+
+    skinRepository.delete(skin);
+
+    logger.info("🗑️ Admin {} deleted skin '{}'", user.getUsername(), skin.getName());
+
+    return ResponseEntity.ok(Map.of("success", true, "deletedSkinId", skinId));
+}
+
 
 
 }

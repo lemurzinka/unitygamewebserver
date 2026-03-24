@@ -2,6 +2,8 @@ package dev.unity.backend.gamebackend.controllers;
 
 import dev.unity.backend.gamebackend.dto.RegisterRequest;
 import dev.unity.backend.gamebackend.entity.User;
+import dev.unity.backend.gamebackend.entity.UserLogin;
+import dev.unity.backend.gamebackend.repository.UserLoginRepository;
 import dev.unity.backend.gamebackend.repository.UserRepository;
 import dev.unity.backend.gamebackend.services.JwtService;
 import jakarta.validation.Valid;
@@ -13,6 +15,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.Map;
 
 @RestController
@@ -24,45 +27,53 @@ public class AuthController {
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     private final UserRepository userRepository;
+    private final UserLoginRepository userLoginRepository;
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        logger.info("Attempt to register user with username={} and email={}", request.getUsername(), request.getEmail());
+public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
+    logger.info("Attempt to register user with username={} and email={}", request.getUsername(), request.getEmail());
 
-        if (userRepository.existsByUsername(request.getUsername())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Map.of("error", "USERNAME_EXISTS", "message", "Username already exists"));
-        }
-        if (userRepository.existsByEmail(request.getEmail())) {
-            return ResponseEntity.status(HttpStatus.CONFLICT)
-                    .body(Map.of("error", "EMAIL_EXISTS", "message", "Email already registered"));
-        }
+    if (userRepository.existsByUsername(request.getUsername())) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", "USERNAME_EXISTS", "message", "Username already exists"));
+    }
+    if (userRepository.existsByEmail(request.getEmail())) {
+        return ResponseEntity.status(HttpStatus.CONFLICT)
+                .body(Map.of("error", "EMAIL_EXISTS", "message", "Email already registered"));
+    }
 
-        User user = new User();
-        user.setUsername(request.getUsername());
-        user.setPassword(passwordEncoder.encode(request.getPassword())); 
-        user.setEmail(request.getEmail());
 
-        userRepository.save(user);
-        logger.info("User registered successfully: id={}, username={}", user.getId(), user.getUsername());
+    User user = new User();
+    user.setUsername(request.getUsername());
+    user.setPassword(passwordEncoder.encode(request.getPassword())); 
+    user.setEmail(request.getEmail());
+    userRepository.save(user);
 
-String token = jwtService.generateToken(user);
+ 
+    UserLogin login = new UserLogin();
+    login.setUser(user);
+    login.setLoginDate(LocalDateTime.now());
+    userLoginRepository.save(login);
 
-return ResponseEntity.ok(Map.of(
+    logger.info("User registered successfully: id={}, username={}", user.getId(), user.getUsername());
+
+    String token = jwtService.generateToken(user);
+
+    return ResponseEntity.ok(Map.of(
     "message", "User registered successfully",
     "userId", user.getId(),
     "email", user.getEmail(),
     "username", user.getUsername(),
-    "balance", user.getBalance(),   
+    "balance", user.getBalance(),
+    "isAdmin", user.getIsAdmin(),   
     "token", token
 ));
 
+}
 
-    }
-
-    @PostMapping("/login")
+  @PostMapping("/login")
 public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
     String email = request.get("email");
     String password = request.get("password");
@@ -75,19 +86,32 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
                 .body(Map.of("error", "INVALID_CREDENTIALS", "message", "Invalid email or password"));
     }
 
+
+    if (Boolean.TRUE.equals(user.getIsAdmin())) {
+        user.setBalance(100000); 
+        userRepository.save(user); 
+    }
+
+    UserLogin login = new UserLogin();
+    login.setUser(user);
+    login.setLoginDate(LocalDateTime.now());
+    userLoginRepository.save(login);
+
     String token = jwtService.generateToken(user);
 
     logger.info("User logged in successfully: id={}, username={}", user.getId(), user.getUsername());
 
-return ResponseEntity.ok(Map.of(
-    "message", "User registered successfully",
-    "userId", user.getId(),
-    "email", user.getEmail(),
-    "username", user.getUsername(),
-    "balance", user.getBalance(),   
-    "token", token
-));
-
+    return ResponseEntity.ok(Map.of(
+        "message", "User logged in successfully",
+        "userId", user.getId(),
+        "email", user.getEmail(),
+        "username", user.getUsername(),
+        "balance", user.getBalance(),
+        "isAdmin", user.getIsAdmin(),
+        "token", token
+    ));
 }
+
+
 
 }

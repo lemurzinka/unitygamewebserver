@@ -47,4 +47,8 @@ public class User {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "selected_skin_id")
     private Skin selectedSkin;
+
+    @Column(nullable = false)
+private Boolean isAdmin = false;
+
 }
