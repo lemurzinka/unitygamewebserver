@@ -1,13 +1,12 @@
 # 🏗️ Build stage
 FROM maven:3.8.5-eclipse-temurin-17 AS build
 WORKDIR /app
-COPY backend/gamebackend/pom.xml .
-COPY backend/gamebackend/src ./src
+COPY backend/gamebackend .
 RUN mvn clean package -DskipTests
 
 # 🚀 Run stage
-FROM eclipse-temurin:17-jdk
+FROM eclipse-temurin:17-jre
 WORKDIR /app
 COPY --from=build /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "app.jar"]
+ENTRYPOINT ["java", "-Duser.timezone=Europe/Kyiv", "-jar", "app.jar"]
