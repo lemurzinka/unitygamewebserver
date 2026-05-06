@@ -10,9 +10,10 @@ useEffect(() => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user?.token;
   if (token) {
-    fetch("http://localhost:8080/api/users/me", {
-      headers: { "Authorization": `Bearer ${token}` }
-    })
+    fetch("https://unitygamewebserver.onrender.com/api/users/me", {
+  headers: { "Authorization": `Bearer ${token}` }
+})
+
       .then(res => res.json())
       .then(data => setSelectedSkinId(data.selectedSkinId || null));
   }
@@ -36,7 +37,7 @@ useEffect(() => {
         <div
           className="moon skin-circle"
           style={{
-            backgroundImage: `url(http://localhost:8080/api/skins/${selectedSkinId}/image)`
+            backgroundImage: `url(https://unitygamewebserver.onrender.com/api/skins/${selectedSkinId}/image)`
           }}
         ></div>
       ) : (

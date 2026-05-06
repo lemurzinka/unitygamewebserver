@@ -57,3 +57,33 @@
   color: #aaa;
   font-style: italic;
 }
+@media (max-width: 768px) {
+  .dashboard-widget {
+    margin-top: 25rem;        
+    padding: 0.75rem;
+  }
+
+  .dashboard-content {
+    flex-direction: column;  
+    align-items: stretch;
+    gap: 1rem;
+  }
+
+  .chart-section,
+  .dashboard-note {
+    flex: unset;
+  }
+
+  .dashboard-title {
+    font-size: clamp(1rem, 5vw, 1.2rem);
+  }
+
+  .note-title {
+    font-size: clamp(0.9rem, 4vw, 1.1rem);
+  }
+
+  .note-text {
+    font-size: clamp(0.8rem, 3.5vw, 0.95rem);
+    line-height: 1.5;
+  }
+}

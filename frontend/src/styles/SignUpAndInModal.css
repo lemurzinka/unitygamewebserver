@@ -11,6 +11,17 @@
   align-items: center;
 }
 
+.sign-anim-stage {
+  position: relative;
+  height: 3.75rem;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  border-radius: 0.75rem;
+}
+
 .auth-background {
   position: absolute;
   top: 0;
@@ -87,15 +98,7 @@
   font-size: 1.125rem;
 }
 
-.auth-google {
-  font-family: 'PTSans', sans-serif;
-  font-weight: 700;
-  height: 3.75rem;
-  background: #D9D9D9;
-  border-radius: 1.25rem;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
+
 
 .auth-submit {
   font-family: 'PTSans', sans-serif;
@@ -120,4 +123,67 @@
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+}
+
+
+@media (max-width: 768px) {
+  .auth-frame {
+    width: 60%;              
+    border-radius: 1rem;      
+    padding: 1rem; 
+    right: 3vh;  
+    bottom: 15vh;       
+  }
+
+  .auth-frame.signup {
+    height: auto;             
+    min-height: 28rem;      
+  }
+
+  .auth-frame.signin {
+    height: auto;
+    min-height: 24rem;
+  }
+
+  .auth-header {
+    padding: 1rem;           
+  }
+
+  .auth-title {
+    font-size: 1.5rem;       
+    margin-top: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .auth-close {
+    width: 2.5rem;
+    height: 2.5rem;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  .auth-form {
+    width: 100%;             
+    gap: 1rem;
+  }
+
+  .auth-form input,
+  .auth-submit {
+    height: 3rem;
+    font-size: 1rem;
+    border-radius: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-title {
+    font-size: 1.25rem;
+  }
+
+  .auth-form input,
+  .auth-google,
+  .auth-submit {
+    font-size: 0.9rem;
+    height: 2.75rem;
+  }
 }

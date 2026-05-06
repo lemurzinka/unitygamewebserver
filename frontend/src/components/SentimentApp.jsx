@@ -8,11 +8,12 @@ function SentimentApp() {
   const [isClosing, setIsClosing] = useState(false);
 
   const analyze = async () => {
-const res = await fetch("http://localhost:8080/api/nlp/analyze", {
+const res = await fetch("https://unitygamewebserver.onrender.com/api/nlp/analyze", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ text }),
 });
+
 
 if (!res.ok) {
   const text = await res.text();

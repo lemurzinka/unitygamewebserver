@@ -17,7 +17,7 @@ function Dashboard() {
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
-    fetch("http://localhost:8080/api/logs/logins")
+    fetch("https://unitygamewebserver.onrender.com/api/logs/logins")
       .then((res) => res.json())
       .then((data) => {
         setChartData({

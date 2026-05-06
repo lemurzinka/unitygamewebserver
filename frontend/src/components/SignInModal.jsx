@@ -4,6 +4,7 @@ import "../styles/SignUpAndInModal.css";
 import closeIcon from "../assets/images/close-icon.png";
 import bgImage from "../assets/images/stars-noised.png";
 import { loginUser } from "../api/auth";
+import SignAnim from "../components/SignAnimation"
 
 export default function SignInModal({ onClose, onSwitchToSignUp }) {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -122,7 +123,10 @@ localStorage.setItem("user", JSON.stringify({
             className={errors.password ? "input-error" : ""}
           />
 
-          <button type="button" className="auth-google">Google</button>
+          
+          <div className="sign-anim-stage">
+          <SignAnim />
+          </div>
           <button type="submit" className="auth-submit">Sign in</button>
         </form>
       </div>

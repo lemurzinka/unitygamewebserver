@@ -14,6 +14,7 @@ import SuccessPage from "./components/SuccessPage";
 
 function App() {
   const [selectedSkinName, setSelectedSkinName] = useState(null);
+    const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
 
   const updateSelectedSkinName = () => {
@@ -21,13 +22,13 @@ function App() {
     const token = user?.token;
     if (!token) return;
 
-    fetch("http://localhost:8080/api/users/me", {
+    fetch("https://unitygamewebserver.onrender.com/api/users/me", {
       headers: { "Authorization": `Bearer ${token}` }
     })
       .then(res => res.json())
       .then(data => {
         if (data.selectedSkinId) {
-          fetch("http://localhost:8080/api/skins")
+          fetch("https://unitygamewebserver.onrender.com/api/skins")
             .then(res => res.json())
             .then(skins => {
               const skin = skins.find(s => s.skinId === data.selectedSkinId);
@@ -56,13 +57,37 @@ function App() {
     return <SuccessPage />;
   }
 
-  return (
+return (
     <div className="app-wrapper">
       <PolygonBackground />
       <Background />
       <Polygon />
       <ProjectTitle />
+
+ 
       <Header />
+
+ 
+      <button 
+        className="menu-toggle" 
+        onClick={() => setIsHeaderOpen(true)}
+      >
+        ☰
+      </button>
+
+    
+      {isHeaderOpen && (
+        <div className="header-overlay">
+          <Header />
+          <button 
+            className="menu-close" 
+            onClick={() => setIsHeaderOpen(false)}
+          >
+            ✕
+          </button>
+        </div>
+      )}
+
       <CurrentSkin />
       <SkinName name={selectedSkinName || "No skin selected"} />
       <SentimentApp />
@@ -70,5 +95,4 @@ function App() {
     </div>
   );
 }
-
 export default App;

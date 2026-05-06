@@ -36,3 +36,36 @@
     transform: rotate(360deg);
   }
 }
+
+
+@media (max-width: 768px) {
+  .App-header {
+    min-height: auto;            
+    padding: 2rem 1rem;         
+    font-size: calc(8px + 2vmin);
+  }
+
+  .App-logo {
+    height: 30vmin;            
+    margin-bottom: 1rem;
+  }
+
+  .App-link {
+    font-size: 0.9rem;         
+  }
+}
+
+@media (max-width: 480px) {
+  .App-header {
+    padding: 1.5rem 0.75rem;
+    font-size: calc(7px + 2vmin);
+  }
+
+  .App-logo {
+    height: 25vmin;            
+  }
+
+  .App-link {
+    font-size: 0.8rem;
+  }
+}

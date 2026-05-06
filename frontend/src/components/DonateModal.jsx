@@ -17,14 +17,14 @@ const handleBuy = async (priceId) => {
   }
 
   try {
-    const res = await fetch("http://localhost:8080/stripe/create-checkout-session", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
-      },
-      body: JSON.stringify({ priceId })
-    });
+const res = await fetch("https://unitygamewebserver.onrender.com/stripe/create-checkout-session", {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    "Authorization": `Bearer ${token}`
+  },
+  body: JSON.stringify({ priceId })
+});
 
     if (!res.ok) {
       const errorText = await res.text(); 

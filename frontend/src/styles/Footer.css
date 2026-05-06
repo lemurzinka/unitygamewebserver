@@ -50,3 +50,29 @@
   text-shadow: 0 0 6px rgba(125, 76, 239, 0.8);
 }
 
+@media (max-width: 768px) {
+  .footer {
+    flex-direction: column;  
+    align-items: center;
+    text-align: center;
+    gap: 1rem;               
+    padding: 1rem;          
+  }
+
+  .footer-left {
+    align-items: center;
+  }
+
+  .footer-right {
+    flex-direction: column;  
+    gap: 0.75rem;
+  }
+
+  .footer-logo {
+    font-size: 1.1rem;        
+  }
+
+  .footer-link {
+    font-size: 0.95rem;      
+  }
+}

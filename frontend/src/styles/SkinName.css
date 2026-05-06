@@ -16,3 +16,22 @@ top: 419px;
   color: #FFFFFF;
 }
 
+@media (max-width: 768px) {
+  .skin-name {
+    left: 50%;                    
+    margin-top: 22vh;                    
+    transform: translateX(-50%);    
+    width: 90%;                   
+    height: auto;                  
+    font-size: clamp(2rem, 12vw, 3rem); 
+    line-height: 1.2;               
+  }
+}
+
+@media (max-width: 480px) {
+  .skin-name {
+    top: 150px;                 
+    font-size: clamp(1.6rem, 10vw, 2.2rem);
+    line-height: 1.1;
+  }
+}

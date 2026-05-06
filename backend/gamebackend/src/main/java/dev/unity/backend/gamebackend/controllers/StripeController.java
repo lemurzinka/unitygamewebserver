@@ -64,8 +64,8 @@ public ResponseEntity<Map<String, Object>> createCheckoutSession(@RequestBody Ma
 
     SessionCreateParams params = SessionCreateParams.builder()
             .setMode(SessionCreateParams.Mode.PAYMENT)
-            .setSuccessUrl("http://localhost:3001/success")
-            .setCancelUrl("http://localhost:3001/cancel")
+            .setSuccessUrl("https://unitygamewebserver.vercel.app/success")
+            .setCancelUrl("https://unitygamewebserver.vercel.app/cancel")
             .setClientReferenceId(user.getId().toString())
             .addLineItem(
                     SessionCreateParams.LineItem.builder()

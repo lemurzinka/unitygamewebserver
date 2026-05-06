@@ -15,3 +15,17 @@
   color: #FFFFFF;
   opacity: 0.52;
 }
+
+
+@media (max-width: 768px) {
+  .current-skin {
+    width: 180px;                
+    height: 30px;
+    left: 50%;                  
+    top: 34vh;                   
+    transform: translateX(-50%);  
+    font-size: 16px;              
+    line-height: 22px;
+    opacity: 0.8;                
+  }
+}

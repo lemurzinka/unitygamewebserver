@@ -203,3 +203,69 @@
   -webkit-text-stroke: 0.063rem #000000;
   text-shadow: none;
 }
+
+
+@media (max-width: 768px) {
+  .donate-frame {
+    width: 85%;
+    height: auto;                        
+    border-radius: 1rem;      
+    padding: 1rem;
+    margin-right: 7.5vh; 
+    margin-bottom: 25vh;
+  }
+
+  .donate-title {
+    font-size: 1.5rem;      
+    top: 0.3rem;
+  }
+
+  .donate-sections {
+    position: static;        
+    margin-top: 2rem;
+    width: 100%;
+    height: auto;
+    flex-direction: column;  
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .donate-card {
+    width: 80%;               
+    max-width: 300px;
+    padding-top: 1.5rem;
+    padding-bottom: 1.5rem;
+  }
+
+
+  .donate-close {
+    width: 1.6rem;
+    height: 1.6rem;
+    top: 1.4rem;
+    right: 0.8rem;
+    z-index: 10;
+  }
+}
+
+@media (max-width: 480px) {
+  .donate-title {
+    font-size: 1.25rem;
+  }
+
+  .donate-card {
+    width: 95%;
+    max-width: 260px;
+  }
+
+  .donate-amount {
+    font-size: 0.8rem;
+  }
+
+  .donate-price {
+    font-size: 0.9rem;
+  }
+
+  .donate-buy-text {
+    font-size: 0.9rem;
+  }
+}

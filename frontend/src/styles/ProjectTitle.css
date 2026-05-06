@@ -24,3 +24,23 @@
 
   z-index: 3;
 }
+
+@media (max-width: 768px) {
+  .project-title {
+    left: 30vh;
+    top: 4vh;
+    font-size: clamp(1.8rem, 6vw, 2.4rem); 
+    letter-spacing: 1px;                  
+    line-height: 1.2;
+    text-shadow: 0 0 6px rgba(255, 0, 255, 0.6),
+                 0 0 12px rgba(160, 32, 240, 0.5),
+                 0 0 18px rgba(138, 43, 226, 0.4);
+  }
+}
+
+@media (max-width: 480px) {
+  .project-title {
+    font-size: clamp(1.4rem, 7vw, 1.8rem); 
+    letter-spacing: 0.5px;
+  }
+}

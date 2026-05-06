@@ -16,9 +16,10 @@ function SuccessPage() {
       console.log("📦 User from localStorage:", user);
       console.log("📦 Token from user object:", token);
 
-      fetch(`http://localhost:8080/api/users/${user.id}/balance`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      })
+      fetch(`https://unitygamewebserver.onrender.com/api/users/${user.id}/balance`, {
+  headers: { "Authorization": `Bearer ${token}` }
+})
+
         .then(res => {
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);

@@ -21,7 +21,11 @@ import java.util.Map;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-@CrossOrigin(origins = "http://localhost:3001")
+@CrossOrigin(origins = {
+    "http://localhost:3001",
+    "https://unitygamewebserver.vercel.app"
+})
+
 public class AuthController {
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);

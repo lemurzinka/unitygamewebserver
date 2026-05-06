@@ -7,3 +7,14 @@
   z-index: 1; 
   pointer-events: none; 
 }
+
+@media (max-width: 768px) {
+  .polygon {
+    top: 20vh;                        
+    left: 50%;             
+    transform: translateX(-50%);
+    width: 70%;           
+    height: auto;         
+    max-height: 40vh;       
+  }
+}
