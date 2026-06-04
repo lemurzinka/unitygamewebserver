@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 
 function SuccessPage() {
   useEffect(() => {
@@ -13,14 +14,12 @@ function SuccessPage() {
     let attempts = 0;
 
     const checkBalance = () => {
-      console.log("📦 User from localStorage:", user);
-      console.log("📦 Token from user object:", token);
+      console.log("User from localStorage:", user);
+      console.log("Token from user object:", token);
 
-      fetch(`https://unitygamewebserver.onrender.com/api/users/${user.id}/balance`, {
-  headers: { "Authorization": `Bearer ${token}` }
-})
-
+      fetchWithAuth(`https://unitygamewebserver.onrender.com/api/users/${user.id}/balance`)
         .then(res => {
+          if (!res) return;
           if (!res.ok) {
             throw new Error(`HTTP error! status: ${res.status}`);
           }
@@ -32,7 +31,7 @@ function SuccessPage() {
           if (Number(data.balance) > 0 || attempts >= 5) {
             user.balance = Number(data.balance);
             localStorage.setItem("user", JSON.stringify(user));
-            console.log("✅ Balance updated:", user.balance);
+            console.log("Balance updated:", user.balance);
             window.location.href = "/";
           } else {
             attempts++;
@@ -40,7 +39,7 @@ function SuccessPage() {
           }
         })
         .catch(err => {
-          console.error("❌ Error fetching balance:", err);
+          console.error("Error fetching balance:", err);
           window.location.href = "/";
         });
     };

@@ -14,6 +14,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdToken;
+import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
+import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
+import com.google.api.client.json.jackson2.JacksonFactory;
+import java.util.Collections;
+import org.springframework.beans.factory.annotation.Value;
+import java.util.UUID;
+
 
 import java.time.LocalDateTime;
 import java.util.Map;
@@ -27,6 +35,9 @@ import java.util.Map;
 })
 
 public class AuthController {
+
+    @Value("${client-id}")
+    private String googleClientId;
 
     private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
@@ -114,6 +125,62 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
         "isAdmin", user.getIsAdmin(),
         "token", token
     ));
+}
+
+    @PostMapping("/google")
+    public ResponseEntity<?> googleLogin(@RequestBody Map<String, String> request) {
+        String idTokenString = request.get("idToken");
+
+        try {
+            GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(
+                    GoogleNetHttpTransport.newTrustedTransport(),
+                    JacksonFactory.getDefaultInstance()
+            )
+            .setAudience(Collections.singletonList(googleClientId)) 
+            .build();
+
+            GoogleIdToken idToken = verifier.verify(idTokenString);
+        if (idToken != null) {
+    GoogleIdToken.Payload payload = idToken.getPayload();
+    String email = payload.getEmail();
+    String name = (String) payload.get("name");
+
+    User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
+    if (user == null) {
+        user = new User();
+        user.setEmail(email);
+        user.setUsername(name);
+        user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); 
+        userRepository.save(user);
+    }
+
+    
+    UserLogin login = new UserLogin();
+    login.setUser(user);
+    login.setLoginDate(LocalDateTime.now());
+    userLoginRepository.save(login);
+
+    String token = jwtService.generateToken(user);
+
+    return ResponseEntity.ok(Map.of(
+        "message", "Google login successful",
+        "userId", user.getId(),
+        "email", user.getEmail(),
+        "username", user.getUsername(),
+        "balance", user.getBalance(),
+        "isAdmin", user.getIsAdmin(),
+        "token", token
+    ));
+}
+ else {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+                    .body(Map.of("error", "INVALID_GOOGLE_TOKEN", "message", "Invalid Google ID token"));
+        }
+    } catch (Exception e) {
+        logger.error("Google login error", e);
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(Map.of("error", "GOOGLE_AUTH_ERROR", "message", "Error verifying Google token"));
+    }
 }
 
 

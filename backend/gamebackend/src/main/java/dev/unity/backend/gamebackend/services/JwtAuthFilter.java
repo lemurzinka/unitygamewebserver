@@ -36,27 +36,27 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                                     FilterChain filterChain) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");
-        logger.info("🔐 JWT Filter triggered for URI: {}", request.getRequestURI());
+        logger.info("JWT Filter triggered for URI: {}", request.getRequestURI());
 
       
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {
-            logger.info("🔓 No token provided — skipping authentication");
+            logger.info("No token provided — skipping authentication");
             filterChain.doFilter(request, response);
             return;
         }
 
         String token = authHeader.substring(7);
-        logger.info("📦 Extracted token: {}", token);
+        logger.info("Extracted token: {}", token);
 
         String email = jwtService.extractUsername(token);
-        logger.info("📧 Extracted email from token: {}", email);
+        logger.info("Extracted email from token: {}", email);
 
         if (email != null && SecurityContextHolder.getContext().getAuthentication() == null) {
             User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
             if (user == null) {
-                logger.warn("❌ No user found with email: {}", email);
+                logger.warn("No user found with email: {}", email);
             } else {
-                logger.info("✅ Found user: {} (id={})", user.getUsername(), user.getId());
+                logger.info("Found user: {} (id={})", user.getUsername(), user.getId());
                 if (jwtService.validateToken(token, user)) {
                     logger.info("🔒 Token is valid for user {}", user.getUsername());
                     UsernamePasswordAuthenticationToken authToken =
@@ -65,11 +65,11 @@ public class JwtAuthFilter extends OncePerRequestFilter {
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
                     SecurityContextHolder.getContext().setAuthentication(authToken);
                 } else {
-                    logger.warn("❌ Token is NOT valid for user {}", user.getUsername());
+                    logger.warn("Token is NOT valid for user {}", user.getUsername());
                 }
             }
         } else {
-            logger.warn("⚠️ Email is null or authentication already exists");
+            logger.warn("Email is null or authentication already exists");
         }
 
         filterChain.doFilter(request, response);

@@ -3,6 +3,7 @@ import "../styles/DonateModal.css";
 import closeIcon from "../assets/images/close-icon.png";
 import coinIcon from "../assets/images/coin.png";
 import { motion } from "framer-motion";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 
 function DonateModal({ onClose }) {
  
@@ -17,18 +18,18 @@ const handleBuy = async (priceId) => {
   }
 
   try {
-const res = await fetch("https://unitygamewebserver.onrender.com/stripe/create-checkout-session", {
+const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/stripe/create-checkout-session", {
   method: "POST",
   headers: {
-    "Content-Type": "application/json",
-    "Authorization": `Bearer ${token}`
+    "Content-Type": "application/json"
   },
   body: JSON.stringify({ priceId })
 });
 
+if (!res) return;
     if (!res.ok) {
       const errorText = await res.text(); 
-      console.error("❌ Failed to create checkout session:", res.status, errorText);
+      console.error("Failed to create checkout session:", res.status, errorText);
       alert("Something went wrong. Try again later.");
       return;
     }
@@ -37,11 +38,11 @@ const res = await fetch("https://unitygamewebserver.onrender.com/stripe/create-c
     if (data.url) {
       window.location.href = data.url;
     } else {
-      console.warn("⚠️ No URL returned from backend:", data);
+      console.warn("No URL returned from backend:", data);
       alert("No redirect URL received.");
     }
   } catch (err) {
-    console.error("❌ Error creating checkout session:", err);
+    console.error("Error creating checkout session:", err);
     alert("Unexpected error occurred.");
   }
 };

@@ -3,11 +3,17 @@ import signAnim from "../assets/animations/rollBall.json";
 
 export default function SignAnimation() {
   return (
-    <Player
-      autoplay
-      loop
-      src={signAnim}
-      style={{ height: "100%", width: "100%" }}
-    />
+    <div className="google-button">
+      <Player
+        autoplay
+        loop
+        src={signAnim}
+        style={{ height: "100%", width: "100%" }}
+        className="google-anim"
+      />
+      <span className="google-text">With Google</span>
+    </div>
   );
 }
+
+

@@ -47,18 +47,18 @@ public ResponseEntity<Map<String, Object>> createCheckoutSession(@RequestBody Ma
     Authentication auth = SecurityContextHolder.getContext().getAuthentication();
     String email = auth.getName(); 
 
-    logger.info("🔍 Looking for user with email: {}", email);
+    logger.info("Looking for user with email: {}", email);
 
     User user = userRepository.findByEmailIgnoreCase(email).orElse(null);
     if (user == null) {
-        logger.warn("❌ No user found with email: {}", email);
+        logger.warn("No user found with email: {}", email);
         return ResponseEntity.status(HttpStatus.NOT_FOUND)
                 .body(Map.of("error", "USER_NOT_FOUND", "message", "User not found"));
     }
 
     String priceId = (String) data.get("priceId");
     if (priceId == null || priceId.isBlank()) {
-        logger.warn("❌ Missing priceId in request body");
+        logger.warn("Missing priceId in request body");
         return ResponseEntity.badRequest().body(Map.of("error", "MISSING_PRICE_ID"));
     }
 
@@ -89,7 +89,7 @@ public ResponseEntity<Map<String, Object>> handleStripeEvent(
         @RequestBody String payload,
         @RequestHeader("Stripe-Signature") String sigHeader
 ) {
-    logger.info("🚀 Webhook endpoint invoked!");
+    logger.info("Webhook endpoint invoked!");
 
     try {
         Event event = Webhook.constructEvent(payload, sigHeader, endpointSecret);
@@ -124,7 +124,7 @@ public ResponseEntity<Map<String, Object>> handleStripeEvent(
             );
 
             long amount = intent.getAmountReceived(); 
-            logger.info("✅ PaymentIntent received, amount={} cents", amount);
+            logger.info("PaymentIntent received, amount={} cents", amount);
 
            
             int coins;
@@ -136,7 +136,7 @@ public ResponseEntity<Map<String, Object>> handleStripeEvent(
             user.setBalance(user.getBalance() + coins);
             userRepository.save(user);
 
-            logger.info("💾 User {} (id={}) saved. Added {} coins. New balance={}",
+            logger.info("User {} (id={}) saved. Added {} coins. New balance={}",
                     user.getUsername(), user.getId(), coins, user.getBalance());
 
             return ResponseEntity.ok(Map.of(
@@ -151,7 +151,7 @@ public ResponseEntity<Map<String, Object>> handleStripeEvent(
     } catch (SignatureVerificationException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(Map.of("error", "INVALID_SIGNATURE"));
     } catch (Exception e) {
-        logger.error("❌ Error processing webhook", e);
+        logger.error("Error processing webhook", e);
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("error", "WEBHOOK_ERROR"));
     }
 }

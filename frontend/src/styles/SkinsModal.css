@@ -281,7 +281,7 @@
   height: 120px;
   border-radius: 50%;
   overflow: hidden;
-  margin: 0 auto;
+  margin: 20px auto;
   border: 2px solid #7d4cef;
   box-shadow: 0 0 10px rgba(125,76,239,0.6);
 }
@@ -293,7 +293,6 @@
 }
 
 .save-btn {
-  margin-top: 1rem;
   padding: 0.7rem;
   border-radius: 0.5rem;
   border: none;

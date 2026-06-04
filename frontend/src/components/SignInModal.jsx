@@ -5,6 +5,8 @@ import closeIcon from "../assets/images/close-icon.png";
 import bgImage from "../assets/images/stars-noised.png";
 import { loginUser } from "../api/auth";
 import SignAnim from "../components/SignAnimation"
+import { GoogleLogin } from "@react-oauth/google";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 
 export default function SignInModal({ onClose, onSwitchToSignUp }) {
   const [form, setForm] = useState({ email: "", password: "" });
@@ -124,9 +126,38 @@ localStorage.setItem("user", JSON.stringify({
           />
 
           
-          <div className="sign-anim-stage">
-          <SignAnim />
-          </div>
+          <div className="google-button">
+  <SignAnim />
+  <div className="google-overlay">
+    <GoogleLogin
+      onSuccess={async credentialResponse => {
+        const idToken = credentialResponse.credential;
+        try {
+          const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken }),
+          });
+          if (!res) return;
+          const data = await res.json();
+          if (res.ok) {
+            localStorage.setItem("user", JSON.stringify(data));
+            onClose();
+            window.location.reload();
+          } else {
+            alert("Google login failed: " + data.message);
+          }
+        } catch (err) {
+          console.error(err);
+          alert("Server connection error");
+        }
+      }}
+      onError={() => alert("Google login failed")}
+    />
+  </div>
+  <span className="google-text">With Google</span>
+</div>
+
           <button type="submit" className="auth-submit">Sign in</button>
         </form>
       </div>

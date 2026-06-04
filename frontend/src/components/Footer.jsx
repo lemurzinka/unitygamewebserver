@@ -16,8 +16,8 @@ function Footer() {
       <div className="footer-right">
 <div className="footer-right">
   <button className="footer-link" onClick={() => setPanel("about")}>✦ Our Story</button>
-  <button className="footer-link" onClick={() => setPanel("terms")}>⚡ Rules of Play</button>
-  <button className="footer-link" onClick={() => setPanel("privacy")}>🔒 Your Space</button>
+  <button className="footer-link" onClick={() => setPanel("terms")}>✦ Rules of Play</button>
+  <button className="footer-link" onClick={() => setPanel("privacy")}>✦ Your Space</button>
 </div>
 
       </div>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import "../styles/SkinsModal.css";
 import binIcon from "../assets/images/bin.png";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 
 
 function SkinsModal({ onClose }) {
@@ -18,10 +19,17 @@ function SkinsModal({ onClose }) {
 
  
   Promise.all([
-    fetch("https://unitygamewebserver.onrender.com/api/users/me", {
-      headers: { "Authorization": `Bearer ${token}` }
-    }).then(res => res.json()),
-    fetch("https://unitygamewebserver.onrender.com/api/skins").then(res => res.json())
+    fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me")
+  .then(res => {
+    if (!res) return;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  }),
+    fetchWithAuth("https://unitygamewebserver.onrender.com/api/skins").then(res => {
+    if (!res) return;
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    return res.json();
+  })
   ])
     .then(([userData, skinsData]) => {
       const updatedUser = { ...user, ...userData, token };
@@ -39,7 +47,7 @@ function SkinsModal({ onClose }) {
 
       setSkins(updatedSkins);
     })
-    .catch(err => console.error("❌ Error fetching user/skins:", err));
+    .catch(err => console.error("Error fetching user/skins:", err));
 }, []);
 
 
@@ -49,16 +57,16 @@ function SkinsModal({ onClose }) {
   const handleBuySkin = async (skin) => {
     const token = user?.token;
     if (!token) {
-      console.error("❌ No token found. User must be logged in.");
+      console.error("No token found. User must be logged in.");
       return;
     }
 
     try {
-      const res = await fetch(`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/buy`, {
+      const res = await fetchWithAuth(`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/buy`, {
         method: "POST",
-        headers: { "Authorization": `Bearer ${token}` }
-      });
 
+      });
+if (!res) return; 
       if (!res.ok) {
         const text = await res.text();
         throw new Error(`HTTP ${res.status}: ${text}`);
@@ -79,14 +87,13 @@ function SkinsModal({ onClose }) {
 
 
     } catch (err) {
-      console.error("❌ Error buying skin:", err.message);
+      console.error("Error buying skin:", err.message);
     }
   };
   const fetchUserFromBackend = async (token) => {
   try {
-    const res = await fetch("https://unitygamewebserver.onrender.com/api/users/me", {
-      headers: { "Authorization": `Bearer ${token}` }
-    });
+    const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me");
+    if (!res) return; 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
     const updatedUser = { ...user, ...data, token }; 
@@ -94,7 +101,7 @@ function SkinsModal({ onClose }) {
     setUser(updatedUser);
     return updatedUser;
   } catch (err) {
-    console.error("❌ Error fetching user:", err.message);
+    console.error("Error fetching user:", err.message);
     return null;
   }
 };
@@ -103,21 +110,20 @@ function SkinsModal({ onClose }) {
  const handleSelectSkin = async (skin) => {
   const token = user?.token;
   if (!token) {
-    console.error("❌ No token found. User must be logged in.");
+    console.error("No token found. User must be logged in.");
     return;
   }
 
   if (!skin.owned) {
-    console.warn("❌ Cannot select skin you don't own.");
+    console.warn("Cannot select skin you don't own.");
     return;
   }
 
   try {
-    const res = await fetch(`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/select`, {
+    const res = await fetchWithAuth(`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/select`, {
       method: "POST",
-      headers: { "Authorization": `Bearer ${token}` }
     });
-
+if (!res) return; 
     if (!res.ok) {
       const text = await res.text();
       throw new Error(`HTTP ${res.status}: ${text}`);
@@ -138,25 +144,39 @@ function SkinsModal({ onClose }) {
       window.dispatchEvent(new Event("userUpdated"));
     }
   } catch (err) {
-    console.error("❌ Error selecting skin:", err.message);
+    console.error("Error selecting skin:", err.message);
   }
 };
 
 
+
+const [deleting, setDeleting] = useState(false);
+
 const handleDeleteSkin = async (skinId) => {
+  setDeleting(true); 
   try {
-    const res = await fetch(`https://unitygamewebserver.onrender.com/api/skins/${skinId}`, {
+    const res = await fetchWithAuth(`https://unitygamewebserver.onrender.com/api/skins/${skinId}`, {
       method: "DELETE",
-      headers: { "Authorization": `Bearer ${user.token}` }
     });
-    const data = await res.json();
+    if (!res) return;
+if (!res.ok) {
+  const text = await res.text();
+  throw new Error(`HTTP ${res.status}: ${text}`);
+}
+const data = await res.json();
+
     if (data.success) {
+      
       setSkins(skins.filter(s => s.skinId !== skinId));
+     
+      setSelectedSkin(null);
     } else {
-      console.error("❌ Error deleting skin:", data.error);
+      console.error("Error deleting skin:", data.error);
     }
   } catch (err) {
-    console.error("❌ Error deleting skin:", err);
+    console.error("Error deleting skin:", err);
+  } finally {
+    setDeleting(false); 
   }
 };
 
@@ -186,11 +206,15 @@ const handleDeleteSkin = async (skinId) => {
     formData.append("price", newSkin.price || 0);
 
     try {
-      const res = await fetch("https://unitygamewebserver.onrender.com/api/skins/upload", {
+      const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/api/skins/upload", {
         method: "POST",
-         headers: { "Authorization": `Bearer ${user.token}` },
         body: formData
       });
+      if (!res) return;
+if (!res.ok) {
+  const text = await res.text();
+  throw new Error(`HTTP ${res.status}: ${text}`);
+}
       const savedSkin = await res.json();
       setSkins([...skins, {
         ...savedSkin,
@@ -200,7 +224,7 @@ const handleDeleteSkin = async (skinId) => {
       setNewSkin({ name: "", rarity: "Common", price: "", file: null });
       setShowForm(false);
     } catch (err) {
-      console.error("❌ Error saving skin:", err);
+      console.error("Error saving skin:", err);
     }
   };
 
@@ -288,11 +312,16 @@ const handleDeleteSkin = async (skinId) => {
             <p className="rarity">{selectedSkin.rarity}</p>
             <p className="price">{selectedSkin.price ? `${selectedSkin.price} coins` : "Free"}</p>
 
-   {user?.isAdmin && (
-        <button className="delete-btn" onClick={() => handleDeleteSkin(selectedSkin.skinId)}>
-          <img src={binIcon} alt="Delete" className="delete-icon" />
-        </button>
-      )}
+{user?.isAdmin && (
+  <button 
+    className="delete-btn" 
+    onClick={() => handleDeleteSkin(selectedSkin.skinId)} 
+    disabled={deleting}
+  >
+    {deleting ? "Deleting..." : <img src={binIcon} alt="Delete" className="delete-icon" />}
+  </button>
+)}
+
       
             {selectedSkin.owned ? (
               selectedSkin.selected ? (

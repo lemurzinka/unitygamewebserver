@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 import { Bar } from "react-chartjs-2";
 import {
   Chart as ChartJS,
@@ -17,22 +18,34 @@ function Dashboard() {
   const [chartData, setChartData] = useState(null);
 
   useEffect(() => {
-    fetch("https://unitygamewebserver.onrender.com/api/logs/logins")
-      .then((res) => res.json())
-      .then((data) => {
-        setChartData({
-          labels: data.labels,
-          datasets: [
-            {
-              label: "Logins per Day",
-              data: data.data,
-              backgroundColor: "rgba(83, 41, 182, 0.7)",
-              borderRadius: 6,
-            },
-          ],
-        });
+  const user = JSON.parse(localStorage.getItem("user"));
+  const token = user?.token;
+
+  const fetchFn = token ? fetchWithAuth : fetch;
+
+  fetchFn("https://unitygamewebserver.onrender.com/api/logs/logins")
+    .then(res => {
+      if (!res) return;
+      if (!res.ok) throw new Error(`HTTP ${res.status}`);
+      return res.json();
+    })
+    .then(data => {
+      if (!data) return;
+      setChartData({
+        labels: data.labels,
+        datasets: [
+          {
+            label: "Logins per Day",
+            data: data.data,
+            backgroundColor: "rgba(83, 41, 182, 0.7)",
+            borderRadius: 6,
+          },
+        ],
       });
-  }, []);
+    })
+    .catch(err => console.error("❌ Error fetching logins:", err));
+}, []);
+
 
   if (!chartData) return <p className="loading-text">Loading chart...</p>;
 
@@ -40,7 +53,7 @@ function Dashboard() {
     <div className="dashboard-widget">
       <div className="dashboard-content">
         <div className="chart-section">
-          <h2 className="dashboard-title">📊 User Activity</h2>
+          <h2 className="dashboard-title">User Activity</h2>
           <Bar 
             data={chartData} 
             options={{
@@ -75,7 +88,7 @@ function Dashboard() {
         </div>
 
         <div className="dashboard-note">
-          <h3 className="note-title">💜 Thank You!</h3>
+          <h3 className="note-title">Thank You!</h3>
             <p>
     We truly appreciate every single one of you who logs in day after day, showing up not just as players, 
     but as the heartbeat of this entire world we are building together. Every click, every login, every moment 
@@ -103,7 +116,7 @@ function Dashboard() {
 
   <p>
     You are the reason we wake up with fire in our hearts and ambition in our minds. Together, we are not just 
-    building a game — we are building a legacy. And this is only the beginning. 🚀🔥🌍
+    building a game — we are building a legacy. And this is only the beginning. 
   </p>
         </div>
       </div>

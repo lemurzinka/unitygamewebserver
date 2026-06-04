@@ -36,6 +36,14 @@ public class HuggingFaceController {
         String text = body.get("text");
         logger.info("User submitted text for sentiment analysis: {}", text);
 
+            if (!text.matches("^[a-zA-Z0-9\\s.,!?'-]+$")) {
+        logger.warn("⚠️ Non-English feedback detected");
+        return ResponseEntity.ok(Map.of(
+            "label", "NON_ENGLISH",
+            "message", "Please provide feedback in English"
+        ));
+    }
+    
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         headers.setAccept(List.of(MediaType.APPLICATION_JSON));

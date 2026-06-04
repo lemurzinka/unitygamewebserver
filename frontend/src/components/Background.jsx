@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import "../styles/Background.css";
 import bgStars from "../assets/images/stars.jpg";
 import Dashboard from "../components/Dashboard";
+import { fetchWithAuth } from "../api/fetchWithAuth";
 
 function Background() {
   const [selectedSkinId, setSelectedSkinId] = useState(null);
@@ -9,14 +10,22 @@ function Background() {
 useEffect(() => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user?.token;
-  if (token) {
-    fetch("https://unitygamewebserver.onrender.com/api/users/me", {
-  headers: { "Authorization": `Bearer ${token}` }
-})
+fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me")
+  .then(res => {
+    if (!res) return; 
+    if (!res.ok) {
+      return res.text().then(text => {
+        throw new Error(`HTTP ${res.status}: ${text}`);
+      });
+    }
+    return res.json();
+  })
+  .then(data => {
+    if (!data) return;
+    setSelectedSkinId(data?.selectedSkinId || null);
+  })
+  .catch(err => console.error("❌ Error fetching user:", err));
 
-      .then(res => res.json())
-      .then(data => setSelectedSkinId(data.selectedSkinId || null));
-  }
 
   const handler = () => {
     const updatedUser = JSON.parse(localStorage.getItem("user"));

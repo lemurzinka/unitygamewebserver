@@ -1,0 +1,94 @@
+.system-message-modal {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  background: rgba(0,0,0,0.7);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 3000;
+}
+
+.system-message-content {
+  background: rgba(30,30,45,0.95);
+  border: 2px solid #7d4cef;
+  border-radius: 1rem;
+  padding: 2rem;
+  width: 350px;
+  text-align: center;
+  color: #fff;
+  box-shadow: 0 0 20px rgba(125,76,239,0.6);
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.system-message-content h3 {
+  margin-bottom: 1rem;
+}
+
+.system-message-content p {
+  margin-bottom: 1rem;
+}
+
+.system-message-content button {
+  margin-top: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  background: #7d4cef;
+  color: #fff;
+  transition: background 0.2s ease;
+}
+
+.system-message-content button:hover {
+  background: #9a6fff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+
+@media (max-width: 768px) {
+  .system-message-content {
+    width: 80%;      
+    padding: 1.5rem;  
+    font-size: 0.9rem; 
+  }
+
+  .system-message-content h3 {
+    font-size: 1.1rem;
+  }
+
+  .system-message-content p {
+    font-size: 0.9rem;
+  }
+
+  .system-message-content button {
+    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .system-message-content {
+    width: 90%;        
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .system-message-content h3 {
+    font-size: 1rem;
+  }
+
+  .system-message-content p {
+    font-size: 0.85rem;
+  }
+
+  .system-message-content button {
+    font-size: 0.85rem;
+    padding: 0.35rem 0.7rem;
+  }
+}
