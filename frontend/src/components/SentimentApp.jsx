@@ -3,6 +3,7 @@ import "../styles/SentimentApp.css";
 import { fetchWithAuth } from "../api/fetchWithAuth";
 
 function SentimentApp() {
+   const API_URL = process.env.REACT_APP_API_URL;
   const [text, setText] = useState("");
   const [result, setResult] = useState(null);
   const [visible, setVisible] = useState(true);
@@ -17,7 +18,7 @@ const token = user?.token;
 
 const fetchFn = token ? fetchWithAuth : fetch;
 
-const res = await fetchFn("https://unitygamewebserver.onrender.com/api/nlp/analyze", {
+const res = await fetchFn(`${API_URL}/api/nlp/analyze`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({ text }),

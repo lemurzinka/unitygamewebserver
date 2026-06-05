@@ -6,6 +6,7 @@ import { fetchWithAuth } from "../api/fetchWithAuth";
 
 
 function SkinsModal({ onClose }) {
+  const API_URL = process.env.REACT_APP_API_URL;
   const [filter, setFilter] = useState("All");
   const [skins, setSkins] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -19,13 +20,13 @@ function SkinsModal({ onClose }) {
 
  
   Promise.all([
-    fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me")
+    fetchWithAuth(`${API_URL}/api/users/me`)
   .then(res => {
     if (!res) return;
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
   }),
-    fetchWithAuth("https://unitygamewebserver.onrender.com/api/skins").then(res => {
+    fetchWithAuth(`${API_URL}/api/skins`).then(res => {
     if (!res) return;
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     return res.json();
@@ -62,7 +63,7 @@ function SkinsModal({ onClose }) {
     }
 
     try {
-      const res = await fetchWithAuth(`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/buy`, {
+      const res = await fetchWithAuth(`${API_URL}/api/skins/${skin.skinId}/buy`, {
         method: "POST",
 
       });
@@ -92,7 +93,7 @@ if (!res) return;
   };
   const fetchUserFromBackend = async (token) => {
   try {
-    const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me");
+    const res = await fetchWithAuth(`${API_URL}/api/users/me`);
     if (!res) return; 
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
     const data = await res.json();
@@ -120,7 +121,7 @@ if (!res) return;
   }
 
   try {
-    const res = await fetchWithAuth(`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/select`, {
+    const res = await fetchWithAuth(`${API_URL}/api/skins/${skin.skinId}/select`, {
       method: "POST",
     });
 if (!res) return; 
@@ -155,7 +156,7 @@ const [deleting, setDeleting] = useState(false);
 const handleDeleteSkin = async (skinId) => {
   setDeleting(true); 
   try {
-    const res = await fetchWithAuth(`https://unitygamewebserver.onrender.com/api/skins/${skinId}`, {
+    const res = await fetchWithAuth(`${API_URL}/api/skins/${skinId}`, {
       method: "DELETE",
     });
     if (!res) return;
@@ -206,7 +207,7 @@ const data = await res.json();
     formData.append("price", newSkin.price || 0);
 
     try {
-      const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/api/skins/upload", {
+      const res = await fetchWithAuth(`${API_URL}/api/skins/upload`, {
         method: "POST",
         body: formData
       });
@@ -253,7 +254,7 @@ if (!res.ok) {
                   onClick={() => setSelectedSkin(skin)}
                 >
                   <div className="skin-img-wrapper spinning">
-                    <img src={`https://unitygamewebserver.onrender.com/api/skins/${skin.skinId}/image`} alt={skin.name} className="skin-img" />
+                    <img src={`${API_URL}/api/skins/${skin.skinId}/image`} alt={skin.name} className="skin-img" />
                   </div>
                 </div>
               ))}
@@ -303,7 +304,7 @@ if (!res.ok) {
             <button className="close-inside" onClick={() => setSelectedSkin(null)}>×</button>
             <div className="skin-img-wrapper">
               <img
-                src={`https://unitygamewebserver.onrender.com/api/skins/${selectedSkin.skinId}/image`}
+                src={`${API_URL}/api/skins/${selectedSkin.skinId}/image`}
                 alt={selectedSkin.name}
                 className="skin-img"
               />

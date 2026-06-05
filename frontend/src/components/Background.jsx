@@ -3,6 +3,7 @@ import "../styles/Background.css";
 import bgStars from "../assets/images/stars.jpg";
 import Dashboard from "../components/Dashboard";
 import { fetchWithAuth } from "../api/fetchWithAuth";
+const API_URL = process.env.REACT_APP_API_URL;
 
 function Background() {
   const [selectedSkinId, setSelectedSkinId] = useState(null);
@@ -10,7 +11,7 @@ function Background() {
 useEffect(() => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user?.token;
-fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me")
+fetchWithAuth(`${API_URL}/api/users/me`)
   .then(res => {
     if (!res) return; 
     if (!res.ok) {
@@ -24,7 +25,7 @@ fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me")
     if (!data) return;
     setSelectedSkinId(data?.selectedSkinId || null);
   })
-  .catch(err => console.error("❌ Error fetching user:", err));
+  .catch(err => console.error("Error fetching user:", err));
 
 
   const handler = () => {
@@ -46,7 +47,7 @@ fetchWithAuth("https://unitygamewebserver.onrender.com/api/users/me")
         <div
           className="moon skin-circle"
           style={{
-            backgroundImage: `url(https://unitygamewebserver.onrender.com/api/skins/${selectedSkinId}/image)`
+            backgroundImage: `url(${API_URL}/api/skins/${selectedSkinId}/image)`
           }}
         ></div>
       ) : (

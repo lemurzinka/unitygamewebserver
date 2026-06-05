@@ -16,6 +16,7 @@ ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend)
 
 function Dashboard() {
   const [chartData, setChartData] = useState(null);
+  const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -23,7 +24,7 @@ function Dashboard() {
 
   const fetchFn = token ? fetchWithAuth : fetch;
 
-  fetchFn("https://unitygamewebserver.onrender.com/api/logs/logins")
+  fetchFn(`${API_URL}/api/logs/logins`)
     .then(res => {
       if (!res) return;
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
@@ -43,7 +44,7 @@ function Dashboard() {
         ],
       });
     })
-    .catch(err => console.error("❌ Error fetching logins:", err));
+    .catch(err => console.error("Error fetching logins:", err));
 }, []);
 
 

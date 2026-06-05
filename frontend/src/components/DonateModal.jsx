@@ -11,6 +11,7 @@ function DonateModal({ onClose }) {
 const handleBuy = async (priceId) => {
   const user = JSON.parse(localStorage.getItem("user"));
   const token = user?.token;
+  const API_URL = process.env.REACT_APP_API_URL;
 
   if (!token) {
     alert("You must be logged in to make a purchase.");
@@ -18,7 +19,7 @@ const handleBuy = async (priceId) => {
   }
 
   try {
-const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/stripe/create-checkout-session", {
+const res = await fetchWithAuth(`${API_URL}/stripe/create-checkout-session`, {
   method: "POST",
   headers: {
     "Content-Type": "application/json"

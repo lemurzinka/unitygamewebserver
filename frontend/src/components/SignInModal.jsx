@@ -9,6 +9,7 @@ import { GoogleLogin } from "@react-oauth/google";
 import { fetchWithAuth } from "../api/fetchWithAuth";
 
 export default function SignInModal({ onClose, onSwitchToSignUp }) {
+  const API_URL = process.env.REACT_APP_API_URL;
   const [form, setForm] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({});
 
@@ -133,11 +134,11 @@ localStorage.setItem("user", JSON.stringify({
       onSuccess={async credentialResponse => {
         const idToken = credentialResponse.credential;
         try {
-          const res = await fetchWithAuth("https://unitygamewebserver.onrender.com/auth/google", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ idToken }),
-          });
+          const res = await fetch(`${API_URL}/auth/google`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ idToken }),
+});
           if (!res) return;
           const data = await res.json();
           if (res.ok) {

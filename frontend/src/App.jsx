@@ -14,6 +14,7 @@ import SuccessPage from "./components/SuccessPage";
 import SystemMessageModal from "./components/SystemMessageModal";
 
 function App() {
+   const API_URL = process.env.REACT_APP_API_URL;
   const [selectedSkinName, setSelectedSkinName] = useState(null);
     const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
@@ -35,7 +36,7 @@ const updateSelectedSkinName = () => {
     return;
   }
 
-  fetch("http://localhost:8080/api/users/me", {
+  fetch(`${API_URL}/api/users/me`, {
     headers: { Authorization: `Bearer ${token}` }
   })
     .then(res => {
@@ -44,7 +45,7 @@ const updateSelectedSkinName = () => {
     })
     .then(data => {
       if (data.selectedSkinId) {
-        fetch("http://localhost:8080/api/skins")
+        fetch(`${API_URL}/api/skins`)
           .then(res => {
             if (!res.ok) throw new Error(`HTTP ${res.status}`);
             return res.json();
@@ -57,7 +58,7 @@ const updateSelectedSkinName = () => {
         setSelectedSkinName(null);
       }
     })
-    .catch(err => console.error("❌ Error loading selected skin:", err));
+    .catch(err => console.error("Error loading selected skin:", err));
 };
 
 
