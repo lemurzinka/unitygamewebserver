@@ -12,9 +12,20 @@ import SkinName from "./components/SkinName";
 import Footer from "./components/Footer";
 import SuccessPage from "./components/SuccessPage";
 import SystemMessageModal from "./components/SystemMessageModal";
+import SignInModal from "./components/SignInModal";
+import SignUpModal from "./components/SignUpModal";
+
 
 function App() {
    const API_URL = process.env.REACT_APP_API_URL;
+
+     console.log("API_URL:", API_URL);
+  console.log("Google Client ID:", process.env.REACT_APP_GOOGLE_CLIENT_ID);
+
+   const [isSignInOpen, setIsSignInOpen] = useState(false);
+  const [isSignUpOpen, setIsSignUpOpen] = useState(false);
+
+
   const [selectedSkinName, setSelectedSkinName] = useState(null);
     const [isHeaderOpen, setIsHeaderOpen] = useState(false);
 
@@ -81,52 +92,71 @@ useEffect(() => {
   }
 
 return (
-    <div className="app-wrapper">
-      <PolygonBackground />
-      <Background />
-      <Polygon />
-      <ProjectTitle />
+  <div className="app-wrapper">
+    <PolygonBackground />
+    <Background />
+    <Polygon />
+    <ProjectTitle />
+    <Header />
 
- 
-      <Header />
+    {sessionExpired && (
+      <SystemMessageModal
+        title="Session expired"
+        message="Your session has ended. Please log in again."
+        onClose={() => {
+          setSessionExpired(false);
+          localStorage.removeItem("user");
+          window.location.href = "/login";
+        }}
+      />
+    )}
 
-{sessionExpired && (
-  <SystemMessageModal
-    title="Session expired"
-    message="Your session has ended. Please log in again."
-    onClose={() => {
-      setSessionExpired(false);
-      localStorage.removeItem("user");
-      window.location.href = "/login";
-    }}
-  />
-)}
+    <button 
+      className="menu-toggle" 
+      onClick={() => setIsHeaderOpen(true)}
+    >
+      ☰
+    </button>
 
-      <button 
-        className="menu-toggle" 
-        onClick={() => setIsHeaderOpen(true)}
-      >
-        ☰
-      </button>
+    {isHeaderOpen && (
+      <div className="header-overlay">
+        <Header />
+        <button 
+          className="menu-close" 
+          onClick={() => setIsHeaderOpen(false)}
+        >
+          ✕
+        </button>
+      </div>
+    )}
 
-    
-      {isHeaderOpen && (
-        <div className="header-overlay">
-          <Header />
-          <button 
-            className="menu-close" 
-            onClick={() => setIsHeaderOpen(false)}
-          >
-            ✕
-          </button>
-        </div>
-      )}
+    <CurrentSkin />
+    <SkinName name={selectedSkinName || "No skin selected"} />
+    <SentimentApp />
+    <Footer />
 
-      <CurrentSkin />
-      <SkinName name={selectedSkinName || "No skin selected"} />
-      <SentimentApp />
-      <Footer />
-    </div>
-  );
+    {isSignInOpen && (
+      <SignInModal 
+        onClose={() => setIsSignInOpen(false)} 
+        onSwitchToSignUp={() => {
+          setIsSignInOpen(false);
+          setIsSignUpOpen(true);
+        }}
+      />
+    )}
+
+    {isSignUpOpen && (
+      <SignUpModal 
+        onClose={() => setIsSignUpOpen(false)} 
+        onSwitchToSignIn={() => {
+          setIsSignUpOpen(false);
+          setIsSignInOpen(true);
+        }}
+      />
+    )}
+  </div>
+);
+
+
 }
 export default App;
