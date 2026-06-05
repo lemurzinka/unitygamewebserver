@@ -157,20 +157,24 @@ localStorage.setItem("user", JSON.stringify({
             className={errors.email ? "input-error" : ""}
           />
 
-                  <div className="sign-anim-stage">
-  <SignAnim />
-  <div className="google-overlay">
+
+            <button type="submit" className="auth-submit">Register</button>
+
+            
+<div className="auth-buttons">
+  <div className="google-button">
     <GoogleLogin
+      ux_mode="popup"
+      useOneTap={false}
       onSuccess={async credentialResponse => {
         const idToken = credentialResponse.credential;
         try {
           const res = await fetch(`${API_URL}/auth/google`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ idToken }),
-});
-
-           if (!res) return;
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ idToken }),
+          });
+          if (!res) return;
           const data = await res.json();
           if (res.ok) {
             localStorage.setItem("user", JSON.stringify(data));
@@ -187,9 +191,10 @@ localStorage.setItem("user", JSON.stringify({
       onError={() => alert("Google sign up failed")}
     />
   </div>
-  <span className="google-text">With Google</span>
+
+
 </div>
-          <button type="submit" className="auth-submit">Register</button>
+
         </form>
       </div>
     </motion.div>

@@ -4,9 +4,7 @@ import "../styles/SignUpAndInModal.css";
 import closeIcon from "../assets/images/close-icon.png";
 import bgImage from "../assets/images/stars-noised.png";
 import { loginUser } from "../api/auth";
-import SignAnim from "../components/SignAnimation"
 import { GoogleLogin } from "@react-oauth/google";
-import { fetchWithAuth } from "../api/fetchWithAuth";
 
 export default function SignInModal({ onClose, onSwitchToSignUp }) {
   const API_URL = process.env.REACT_APP_API_URL;
@@ -126,41 +124,39 @@ localStorage.setItem("user", JSON.stringify({
             className={errors.password ? "input-error" : ""}
           />
 
-<div className="google-button">
-  <SignAnim />
+
+          <button type="submit" className="auth-submit">Sign in</button>
+
+          <div className="google-button">
   <GoogleLogin
     ux_mode="popup"
     useOneTap={false}
     onSuccess={async credentialResponse => {
-  const idToken = credentialResponse.credential;
-  try {
-    const res = await fetch(`${API_URL}/auth/google`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ idToken }),
-    });
-    if (!res) return;
-    const data = await res.json();
-    if (res.ok) {
-      localStorage.setItem("user", JSON.stringify(data));
-      onClose();
-      window.location.reload();
-    } else {
-      alert("Google login failed: " + data.message);
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Server connection error");
-  }
-}}
-
+      const idToken = credentialResponse.credential;
+      try {
+        const res = await fetch(`${API_URL}/auth/google`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ idToken }),
+        });
+        if (!res) return;
+        const data = await res.json();
+        if (res.ok) {
+          localStorage.setItem("user", JSON.stringify(data));
+          onClose();
+          window.location.reload();
+        } else {
+          alert("Google login failed: " + data.message);
+        }
+      } catch (err) {
+        console.error(err);
+        alert("Server connection error");
+      }
+    }}
     onError={() => alert("Google login failed")}
   />
 </div>
 
-
-
-          <button type="submit" className="auth-submit">Sign in</button>
         </form>
       </div>
     </motion.div>
