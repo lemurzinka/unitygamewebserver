@@ -263,3 +263,8 @@
     font-size: 0.8rem;
   }
 }
+
+.google-button iframe {
+  width: 100% !important;
+  height: 100% !important;
+}
