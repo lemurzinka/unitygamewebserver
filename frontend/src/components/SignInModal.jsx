@@ -46,6 +46,7 @@ export default function SignInModal({ onClose, onSwitchToSignUp }) {
       if (res.ok) {
         const data = await res.json();
         alert(data.message);
+        console.log("GoogleLogin data:", data)
 localStorage.setItem("user", JSON.stringify({
   id: data.userId,
   email: data.email,

@@ -19,8 +19,6 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 function App() {
   const API_URL = process.env.REACT_APP_API_URL;
 
-  console.log("API_URL:", API_URL);
-  console.log("Google Client ID:", process.env.REACT_APP_GOOGLE_CLIENT_ID);
 
   const [isSignInOpen, setIsSignInOpen] = useState(false);
   const [isSignUpOpen, setIsSignUpOpen] = useState(false);
