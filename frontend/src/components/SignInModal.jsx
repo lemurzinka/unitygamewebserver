@@ -128,33 +128,41 @@ localStorage.setItem("user", JSON.stringify({
           <button type="submit" className="auth-submit">Sign in</button>
 
           <div className="google-button">
-  <GoogleLogin
-    ux_mode="popup"
-    useOneTap={false}
-    onSuccess={async credentialResponse => {
-      const idToken = credentialResponse.credential;
-      try {
-        const res = await fetch(`${API_URL}/auth/google`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ idToken }),
-        });
-        if (!res) return;
-        const data = await res.json();
-        if (res.ok) {
-          localStorage.setItem("user", JSON.stringify(data));
-          onClose();
-          window.location.reload();
-        } else {
-          alert("Google login failed: " + data.message);
-        }
-      } catch (err) {
-        console.error(err);
-        alert("Server connection error");
+<GoogleLogin
+  ux_mode="popup"
+  useOneTap={false}
+  onSuccess={async credentialResponse => {
+    const idToken = credentialResponse.credential;
+    try {
+      const res = await fetch(`${API_URL}/auth/google`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ idToken }),
+      });
+      if (!res) return;
+      const data = await res.json();
+      if (res.ok) {
+        localStorage.setItem("user", JSON.stringify({
+          id: data.userId,        
+          email: data.email,
+          username: data.username,
+          balance: data.balance,
+          isAdmin: data.isAdmin,
+          token: data.token       
+        }));
+        onClose();
+        window.dispatchEvent(new Event("userUpdated")); 
+      } else {
+        alert("Google login failed: " + data.message);
       }
-    }}
-    onError={() => alert("Google login failed")}
-  />
+    } catch (err) {
+      console.error(err);
+      alert("Server connection error");
+    }
+  }}
+  onError={() => alert("Google login failed")}
+/>
+
 </div>
 
         </form>
