@@ -1,7 +1,6 @@
 package dev.unity.backend.gamebackend.controllers;
 
 import dev.unity.backend.gamebackend.dto.RegisterRequest;
-import dev.unity.backend.gamebackend.dto.UserResponseDto;
 import dev.unity.backend.gamebackend.entity.Skin;
 import dev.unity.backend.gamebackend.entity.User;
 import dev.unity.backend.gamebackend.entity.UserLogin;
@@ -21,6 +20,8 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.googleapis.javanet.GoogleNetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import java.util.Collections;
+import java.util.HashMap;
+
 import org.springframework.beans.factory.annotation.Value;
 import java.util.UUID;
 
@@ -78,29 +79,15 @@ public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
 
     String token = jwtService.generateToken(user);
 
-   UserResponseDto response = new UserResponseDto();
-response.setMessage("User registered successful");
-response.setId(user.getId());
-response.setEmail(user.getEmail());
-response.setUsername(user.getUsername());
-response.setBalance(user.getBalance());
-response.setIsAdmin(user.getIsAdmin());
-
-response.setSelectedSkinId(
-    user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId().longValue() : null
-);
-
-response.setOwnedSkinIds(
-    user.getOwnedSkins().stream()
-        .map(s -> s.getSkinId().longValue()) 
-        .toList()
-);
-
-
-
-response.setToken(token);
-return ResponseEntity.ok(response);
-
+    return ResponseEntity.ok(Map.of(
+    "message", "User registered successfully",
+    "userId", user.getId(),
+    "email", user.getEmail(),
+    "username", user.getUsername(),
+    "balance", user.getBalance(),
+    "isAdmin", user.getIsAdmin(),   
+    "token", token
+));
 }
 
   @PostMapping("/login")
@@ -131,28 +118,15 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 
     logger.info("User logged in successfully: id={}, username={}", user.getId(), user.getUsername());
 
-     UserResponseDto response = new UserResponseDto();
-response.setMessage("User login successful");
-response.setId(user.getId());
-response.setEmail(user.getEmail());
-response.setUsername(user.getUsername());
-response.setBalance(user.getBalance());
-response.setIsAdmin(user.getIsAdmin());
-
-response.setSelectedSkinId(
-    user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId().longValue() : null
-);
-
-response.setOwnedSkinIds(
-    user.getOwnedSkins().stream()
-        .map(s -> s.getSkinId().longValue()) 
-        .toList()
-);
-
-
-
-response.setToken(token);
-return ResponseEntity.ok(response);
+    return ResponseEntity.ok(Map.of(
+        "message", "User logged in successfully",
+        "userId", user.getId(),
+        "email", user.getEmail(),
+        "username", user.getUsername(),
+        "balance", user.getBalance(),
+        "isAdmin", user.getIsAdmin(),
+        "token", token
+    ));
 }
 
     @PostMapping("/google")
@@ -190,28 +164,22 @@ return ResponseEntity.ok(response);
 
     String token = jwtService.generateToken(user);
 
-     UserResponseDto response = new UserResponseDto();
-response.setMessage("Google login successful");
-response.setId(user.getId());
-response.setEmail(user.getEmail());
-response.setUsername(user.getUsername());
-response.setBalance(user.getBalance());
-response.setIsAdmin(user.getIsAdmin());
+Map<String, Object> response = new HashMap<>();
+response.put("message", "Google login successful");
+response.put("userId", user.getId());
+response.put("email", user.getEmail());
+response.put("username", user.getUsername());
+response.put("balance", user.getBalance());
+response.put("isAdmin", user.getIsAdmin());
+response.put("selectedSkinId", user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId() : null);
+response.put("ownedSkinIds", user.getOwnedSkins().stream().map(Skin::getSkinId).toList());
+response.put("selectedSkinName", user.getSelectedSkin() != null ? user.getSelectedSkin().getName() : null);
+response.put("selectedSkinImageUrl", user.getSelectedSkin() != null ? "/api/skins/" + user.getSelectedSkin().getSkinId() + "/image" : null);
+response.put("token", token);
 
-response.setSelectedSkinId(
-    user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId().longValue() : null
-);
-
-response.setOwnedSkinIds(
-    user.getOwnedSkins().stream()
-        .map(s -> s.getSkinId().longValue()) 
-        .toList()
-);
-
-
-
-response.setToken(token);
 return ResponseEntity.ok(response);
+
+
 }
  else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)

@@ -141,19 +141,14 @@ localStorage.setItem("user", JSON.stringify({
         body: JSON.stringify({ idToken }),
       });
       if (!res) return;
-      const data = await res.json();
+
       if (res.ok) {
-        localStorage.setItem("user", JSON.stringify({
-          id: data.userId,        
-          email: data.email,
-          username: data.username,
-          balance: data.balance,
-          isAdmin: data.isAdmin,
-          token: data.token       
-        }));
+        const data = await res.json();
+        localStorage.setItem("user", JSON.stringify(data));
         onClose();
-        window.dispatchEvent(new Event("userUpdated")); 
+        window.location.reload();   
       } else {
+        const data = await res.json();
         alert("Google login failed: " + data.message);
       }
     } catch (err) {
@@ -163,6 +158,7 @@ localStorage.setItem("user", JSON.stringify({
   }}
   onError={() => alert("Google login failed")}
 />
+
 
 </div>
 

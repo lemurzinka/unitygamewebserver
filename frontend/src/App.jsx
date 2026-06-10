@@ -91,7 +91,8 @@ function App() {
           onClose={() => {
             setSessionExpired(false);
             localStorage.removeItem("user");
-            window.location.href = "/login";
+            window.location.href = "/";
+setIsSignInOpen(true);
           }}
         />
       )}
