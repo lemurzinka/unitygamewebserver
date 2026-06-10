@@ -1,6 +1,8 @@
 package dev.unity.backend.gamebackend.controllers;
 
 import dev.unity.backend.gamebackend.dto.RegisterRequest;
+import dev.unity.backend.gamebackend.dto.UserResponseDto;
+import dev.unity.backend.gamebackend.entity.Skin;
 import dev.unity.backend.gamebackend.entity.User;
 import dev.unity.backend.gamebackend.entity.UserLogin;
 import dev.unity.backend.gamebackend.repository.UserLoginRepository;
@@ -76,15 +78,28 @@ public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
 
     String token = jwtService.generateToken(user);
 
-    return ResponseEntity.ok(Map.of(
-    "message", "User registered successfully",
-    "userId", user.getId(),
-    "email", user.getEmail(),
-    "username", user.getUsername(),
-    "balance", user.getBalance(),
-    "isAdmin", user.getIsAdmin(),   
-    "token", token
-));
+   UserResponseDto response = new UserResponseDto();
+response.setMessage("User registered successful");
+response.setId(user.getId());
+response.setEmail(user.getEmail());
+response.setUsername(user.getUsername());
+response.setBalance(user.getBalance());
+response.setIsAdmin(user.getIsAdmin());
+
+response.setSelectedSkinId(
+    user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId().longValue() : null
+);
+
+response.setOwnedSkinIds(
+    user.getOwnedSkins().stream()
+        .map(s -> s.getSkinId().longValue()) 
+        .toList()
+);
+
+
+
+response.setToken(token);
+return ResponseEntity.ok(response);
 
 }
 
@@ -116,15 +131,28 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 
     logger.info("User logged in successfully: id={}, username={}", user.getId(), user.getUsername());
 
-    return ResponseEntity.ok(Map.of(
-        "message", "User logged in successfully",
-        "userId", user.getId(),
-        "email", user.getEmail(),
-        "username", user.getUsername(),
-        "balance", user.getBalance(),
-        "isAdmin", user.getIsAdmin(),
-        "token", token
-    ));
+     UserResponseDto response = new UserResponseDto();
+response.setMessage("User login successful");
+response.setId(user.getId());
+response.setEmail(user.getEmail());
+response.setUsername(user.getUsername());
+response.setBalance(user.getBalance());
+response.setIsAdmin(user.getIsAdmin());
+
+response.setSelectedSkinId(
+    user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId().longValue() : null
+);
+
+response.setOwnedSkinIds(
+    user.getOwnedSkins().stream()
+        .map(s -> s.getSkinId().longValue()) 
+        .toList()
+);
+
+
+
+response.setToken(token);
+return ResponseEntity.ok(response);
 }
 
     @PostMapping("/google")
@@ -162,15 +190,28 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> request) {
 
     String token = jwtService.generateToken(user);
 
-    return ResponseEntity.ok(Map.of(
-        "message", "Google login successful",
-        "userId", user.getId(),
-        "email", user.getEmail(),
-        "username", user.getUsername(),
-        "balance", user.getBalance(),
-        "isAdmin", user.getIsAdmin(),
-        "token", token
-    ));
+     UserResponseDto response = new UserResponseDto();
+response.setMessage("Google login successful");
+response.setId(user.getId());
+response.setEmail(user.getEmail());
+response.setUsername(user.getUsername());
+response.setBalance(user.getBalance());
+response.setIsAdmin(user.getIsAdmin());
+
+response.setSelectedSkinId(
+    user.getSelectedSkin() != null ? user.getSelectedSkin().getSkinId().longValue() : null
+);
+
+response.setOwnedSkinIds(
+    user.getOwnedSkins().stream()
+        .map(s -> s.getSkinId().longValue()) 
+        .toList()
+);
+
+
+
+response.setToken(token);
+return ResponseEntity.ok(response);
 }
  else {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
