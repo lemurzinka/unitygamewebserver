@@ -30,14 +30,18 @@ function SuccessPage() {
           console.log(`Attempt ${attempts + 1}, balance from backend:`, data.balance);
 
           if (Number(data.balance) !== user.balance || attempts >= 5) {
-            user.balance = Number(data.balance);
-            localStorage.setItem("user", JSON.stringify(user));
-            console.log("Balance updated:", user.balance);
+  user.balance = Number(data.balance);
+  localStorage.setItem("user", JSON.stringify(user));
+  console.log("Balance updated:", user.balance);
 
-            window.dispatchEvent(new Event("userUpdated"));
+  window.dispatchEvent(new Event("userUpdated"));
 
-            window.location.href = "/";
-          } else {
+  
+  setTimeout(() => {
+    window.location.href = "/";
+  }, 5000);
+}
+ else {
             attempts++;
             setTimeout(checkBalance, 3000); 
           }
