@@ -29,10 +29,13 @@ function SuccessPage() {
         .then(data => {
           console.log(`Attempt ${attempts + 1}, balance from backend:`, data.balance);
 
-          if (Number(data.balance) > 0 || attempts >= 5) {
+          if (Number(data.balance) !== user.balance || attempts >= 5) {
             user.balance = Number(data.balance);
             localStorage.setItem("user", JSON.stringify(user));
             console.log("Balance updated:", user.balance);
+
+            window.dispatchEvent(new Event("userUpdated"));
+
             window.location.href = "/";
           } else {
             attempts++;
