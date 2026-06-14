@@ -92,3 +92,26 @@
     padding: 0.35rem 0.7rem;
   }
 }
+
+
+@media (max-width: 1366px) {
+  .system-message-content {
+    width: 300px;             
+    padding: 1.75rem;         
+    font-size: 0.95rem;       
+    border-radius: 0.75rem;
+  }
+
+  .system-message-content h3 {
+    font-size: 1.2rem;
+  }
+
+  .system-message-content p {
+    font-size: 0.95rem;
+  }
+
+  .system-message-content button {
+    font-size: 0.95rem;
+    padding: 0.45rem 0.9rem;
+  }
+}

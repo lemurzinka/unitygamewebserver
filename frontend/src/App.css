@@ -69,3 +69,21 @@
     font-size: 0.8rem;
   }
 }
+
+
+@media (max-width: 1366px) {
+  .App-header {
+    min-height: auto;
+    padding: 3rem 2rem;
+    font-size: calc(9px + 2vmin);
+  }
+
+  .App-logo {
+    height: 35vmin;
+    margin-bottom: 1.5rem;
+  }
+
+  .App-link {
+    font-size: 1rem;
+  }
+}

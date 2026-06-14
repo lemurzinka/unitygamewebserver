@@ -202,3 +202,36 @@
   border: 0.125rem solid #ffc800;
   color: #ffdd55;
 }
+
+
+@media (max-width: 1366px) {
+  .sentiment-widget {
+    width: 18rem;             
+    bottom: 1rem;            
+    right: 1rem;              
+    padding: 0.85rem;         
+    font-size: 0.9rem;        
+    border-radius: 0.6rem;
+  }
+
+  .title {
+    font-size: 1.1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .input-box {
+    height: 4.5rem;
+    font-size: 0.9rem;
+  }
+
+  .analyze-btn {
+    font-size: 0.95rem;
+    padding: 0.55rem;
+  }
+
+  .close-btn {
+    font-size: 1.3rem;
+    top: 0.35rem;
+    right: 0.55rem;
+  }
+}

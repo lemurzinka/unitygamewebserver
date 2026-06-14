@@ -44,3 +44,17 @@
     letter-spacing: 0.5px;
   }
 }
+
+
+@media (max-width: 1366px) {
+  .project-title {
+    left: 20vh;                     
+    top: 5vh;                     
+    font-size: clamp(2rem, 5vw, 3rem); 
+    letter-spacing: 1px;
+    line-height: 1.2;
+    text-shadow: 0 0 6px rgba(255, 0, 255, 0.6),
+                 0 0 12px rgba(160, 32, 240, 0.5),
+                 0 0 18px rgba(138, 43, 226, 0.4);
+  }
+}

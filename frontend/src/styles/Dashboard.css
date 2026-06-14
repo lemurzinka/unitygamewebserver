@@ -87,3 +87,28 @@
     line-height: 1.5;
   }
 }
+
+
+@media (max-width: 1366px) {
+  .dashboard-widget {
+    margin-top: 20rem;      
+    padding: 1rem;          
+  }
+
+  .dashboard-content {
+    gap: 1rem;               
+  }
+
+  .dashboard-title {
+    font-size: 1.2rem;     
+  }
+
+  .note-title {
+    font-size: 1rem;
+  }
+
+  .note-text {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+}

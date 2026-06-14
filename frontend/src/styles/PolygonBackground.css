@@ -25,3 +25,15 @@
     opacity: 0.7;              
   }
 }
+
+@media (max-width: 1366px) {
+  .polygon-bg {
+    left: 50%;                 
+    top: -5vh;                 
+    transform: translateX(-50%);
+    width: 90%;                
+    height: auto;              
+    max-height: 60vh;          
+    opacity: 0.8;              
+  }
+}

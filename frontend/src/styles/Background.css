@@ -95,3 +95,28 @@
     top: 15vh;
   }
 }
+
+
+
+@media (max-width: 1366px) {
+  .bg-layer {
+    width: 150vw;
+    height: 120vh;
+    left: -20vw;
+    top: -10vh;
+  }
+
+  .moon {
+    width: 40vw;
+    height: 40vw;
+    left: 20vw;
+    top: 10vh;
+  }
+
+  .skin-circle {
+    width: 25vw;
+    height: 25vw;
+    left: 35vw;
+    top: 20vh;
+  }
+}

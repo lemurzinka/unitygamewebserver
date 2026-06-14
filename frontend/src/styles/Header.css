@@ -226,3 +226,25 @@ html {
     to { transform: translateY(0); opacity: 1; }
   }
 }
+
+
+@media (max-width: 1366px) {
+  .header {
+    position: relative;       
+    top: 2rem;
+    left: 50%;                
+    transform: translateX(-50%);
+    width: 80%;               
+    height: auto;
+  }
+
+  .nav-button,
+  .donate-text {
+    font-size: 1.2rem;      
+  }
+
+  .coin-icon {
+    width: 1.5rem;
+    height: 1.4rem;
+  }
+}

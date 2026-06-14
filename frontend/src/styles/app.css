@@ -12,3 +12,23 @@ html, body {
   overflow-x: hidden;
 }
 
+@media (max-width: 1366px) {
+  .app-wrapper {
+    padding: 1.5rem;
+    max-width: 1200px;   
+    margin: 0 auto;      
+  }
+}
+
+@media (max-width: 768px) {
+  .app-wrapper {
+    padding: 1rem;
+  }
+}
+
+
+@media (max-width: 480px) {
+  .app-wrapper {
+    padding: 0.5rem;
+  }
+}

@@ -535,3 +535,38 @@
 
 
 }
+@media (max-width: 1366px) {
+  .skins-frame {
+    width: 48rem;              
+    height: auto;             
+    border-radius: 1.5rem;
+    padding: 1.25rem;
+  }
+
+  .skins-title {
+    font-size: 1.75rem;      
+    margin: 1rem 0;
+  }
+
+  .skins-sidebar {
+    width: 10rem;             
+    padding: 0.75rem;
+    gap: 0.5rem;
+  }
+
+  .skins-content {
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .skin-card {
+    padding: 0.75rem;
+  }
+
+  .skins-close {
+    width: 2.5rem;
+    height: 2.5rem;
+    top: 1rem;
+    right: 1rem;
+  }
+}

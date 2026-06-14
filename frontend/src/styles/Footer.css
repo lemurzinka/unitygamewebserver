@@ -76,3 +76,23 @@
     font-size: 0.95rem;      
   }
 }
+
+
+@media (max-width: 1366px) {
+  .footer {
+    padding: 0.75rem 1.5rem;  
+    font-size: 0.85rem;       
+  }
+
+  .footer-right {
+    gap: 1rem;                
+  }
+
+  .footer-logo {
+    font-size: 0.95rem;      
+  }
+
+  .footer-link {
+    font-size: 0.9rem;
+  }
+}

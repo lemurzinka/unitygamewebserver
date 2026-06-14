@@ -18,3 +18,14 @@
     max-height: 40vh;       
   }
 }
+
+@media (max-width: 1366px) {
+  .polygon {
+    top: 25vh;                        
+    left: 50%;             
+    transform: translateX(-50%);
+    width: 80%;           
+    height: auto;         
+    max-height: 50vh;       
+  }
+}
